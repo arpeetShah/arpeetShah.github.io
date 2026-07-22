@@ -256,6 +256,9 @@ section { position: relative; padding: 0 var(--pad); }
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* keep hero content clear of the fixed nav on short/wide viewports */
+  padding-top: clamp(96px, 12vh, 140px);
+  padding-bottom: clamp(20px, 4vh, 50px);
 }
 .hero__inner { max-width: var(--max); margin: 0 auto; width: 100%; }
 .hero__eyebrow {
