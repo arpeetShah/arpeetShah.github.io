@@ -519,6 +519,24 @@ body.is-card-hover .cursor { width: 68px; height: 68px; margin: -34px 0 0 -34px;
   font-family: var(--font-display);
   font-weight: 400;
 }
+.detail__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 13px 26px;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+.detail__cta:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.detail__cta i { font-style: normal; transition: transform 0.3s; }
+.detail__cta:hover i { transform: translate(3px, -3px); }
+
 .detail__grid {
   margin-top: clamp(40px, 6vw, 70px);
   display: grid;

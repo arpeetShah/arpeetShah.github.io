@@ -48,6 +48,7 @@ const CONTENT = {
       kicker: "What I Built",
       color: "#6ee7ff",
       model: "torusKnot",
+      link: { label: "Read The Pulse", url: "https://arpeetshah.github.io/the-pulse/" },
       blurb: "A weekly publication for high schoolers — founded, researched, written and coded by me.",
       lede: "I couldn't find media written for people like me. So I built it.",
       body: [
@@ -94,6 +95,7 @@ const CONTENT = {
       kicker: "How I Think",
       color: "#b98bff",
       model: "torus",
+      link: { label: "Read the articles", url: "https://arpeetshah.github.io/the-pulse/articles.html" },
       blurb: "Research-backed writing, peer to peer — never talking down to the reader.",
       lede: "Every article starts with a question I couldn't answer.",
       body: [
@@ -117,6 +119,7 @@ const CONTENT = {
       kicker: "What I'm Building",
       color: "#ff7ac6",
       model: "icosahedron",
+      link: { label: "See the code on GitHub", url: "https://github.com/arpeetShah" },
       blurb: "When the tool I need doesn't exist, I build it — sites, shaders, experiments.",
       lede: "I build the things that carry the writing.",
       body: [
@@ -216,6 +219,10 @@ const CONTENT = {
       kicker: "Where I'm From",
       color: "#ffb26e",
       model: "sphere",
+      link: {
+        label: "Read my McKinney story",
+        url: "https://arpeetshah.github.io/the-pulse/articles/mckinney-startup-scene.html",
+      },
       blurb: "A Texas suburb with a lot more going on than most people realize.",
       lede: "Home base — and a beat I actually cover.",
       body: [
@@ -255,36 +262,38 @@ const CONTENT = {
     {
       title: "You Don't Have to Choose Between Grades and Having Fun — You Just Have to Know When",
       excerpt: "Every high schooler is navigating the same tension. Here's what nobody tells you about handling it — and the research that backs it up.",
-      category: "Mental Health", cat: "mental", date: "May 18, 2025", url: "#",
+      category: "Mental Health", cat: "mental", date: "May 18, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/grades-and-fun.html",
     },
     {
       title: "How to Start Making Real Money Before You Graduate",
       excerpt: "You don't need a work permit or a boss. Here's what actually works for high schoolers who want to earn on their own terms.",
-      category: "Money", cat: "money", date: "May 11, 2025", url: "#",
+      category: "Money", cat: "money", date: "May 11, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/making-money-in-high-school.html",
     },
     {
       title: "Why Your Brain Actually Works Differently After 10 PM",
       excerpt: "There's a reason late-night studying feels different. The science of your teen brain explains everything — including why you can't fall asleep.",
-      category: "Science", cat: "science", date: "May 4, 2025", url: "#",
+      category: "Science", cat: "science", date: "May 4, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/brain-at-night.html",
     },
     {
       title: "The Truth About Getting Recruited That Nobody Told Me",
       excerpt: "College sports recruitment is a game most high schoolers play without knowing the rules. Here's what I learned from coaches and athletes.",
-      category: "Sports", cat: "sports", date: "Apr 27, 2025", url: "#",
+      category: "Sports", cat: "sports", date: "Apr 27, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/sports-recruiting-truth.html",
     },
     {
       title: "McKinney Has a Startup Scene and Most Locals Have No Idea",
       excerpt: "From teen founders to small business owners rewriting what a Texas suburb looks like — here's what's quietly building in our backyard.",
-      category: "Local", cat: "local", date: "Apr 20, 2025", url: "#",
+      category: "Local", cat: "local", date: "Apr 20, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/mckinney-startup-scene.html",
     },
   ],
 
-  // TODO: paste your real URLs in place of the "#" values.
+  // Anything still set to "#" is hidden automatically, so there are
+  // never dead links. Paste a real URL in and it appears.
   socials: [
-    { label: "The Pulse", url: "#" },
-    { label: "Orvexa", url: "#" },
-    { label: "Instagram", url: "#" },
-    { label: "TikTok", url: "#" },
+    { label: "The Pulse", url: "https://arpeetshah.github.io/the-pulse/" },
+    { label: "GitHub", url: "https://github.com/arpeetShah" },
+    { label: "Orvexa", url: "#" },      // TODO: Orvexa site
+    { label: "Instagram", url: "#" },   // TODO: instagram.com/yourhandle
+    { label: "TikTok", url: "#" },      // TODO: tiktok.com/@yourhandle
     { label: "Email", url: "mailto:arpeet.s.shah@gmail.com" },
   ],
 };
@@ -337,8 +346,13 @@ function hydrate() {
     )
     .join("");
 
+  // only render links that actually go somewhere
   $("socials").innerHTML = CONTENT.socials
-    .map((s) => `<a href="${s.url}" data-cursor target="_blank" rel="noopener">${s.label}</a>`)
+    .filter((s) => s.url && s.url !== "#")
+    .map((s) => {
+      const ext = s.url.startsWith("http");
+      return `<a href="${s.url}" data-cursor${ext ? ' target="_blank" rel="noopener"' : ""}>${s.label}</a>`;
+    })
     .join("");
 }
 
@@ -392,6 +406,16 @@ function openDetail(i) {
   $("dKicker").textContent = c.kicker;
   $("dTitle").textContent = c.title;
   $("dLede").textContent = c.lede || c.blurb;
+
+  // "visit the real thing" button — hidden when there's no link yet
+  const link = $("dLink");
+  if (c.link && c.link.url && c.link.url !== "#") {
+    link.style.display = "";
+    link.href = c.link.url;
+    link.innerHTML = `${c.link.label || "Visit"} <i>↗</i>`;
+  } else {
+    link.style.display = "none";
+  }
   $("dBody").innerHTML = (c.body || []).map((p) => `<p>${p}</p>`).join("");
   $("dStats").innerHTML = (c.stats || [])
     .map((s) => `<div><dt>${s.k}</dt><dd>${s.v}</dd></div>`)
