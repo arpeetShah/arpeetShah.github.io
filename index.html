@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <meta name="description" content="Personal portfolio — creative work, projects and experiments." />
+
+  <!-- Fonts (Fontshare — premium studio-style type) -->
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link
+    href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Import map: real ES-module libraries via CDN, no build step -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+      "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+      "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js",
+      "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.mjs"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Grain + vignette overlays for cinematic depth -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- Custom cursor -->
+  <div class="cursor" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="preloader__inner">
+      <div class="preloader__count"><span id="loadPct">0</span><em>%</em></div>
+      <div class="preloader__bar"><span id="loadBar"></span></div>
+      <div class="preloader__label">Loading experience</div>
+    </div>
+  </div>
+
+  <!-- WebGL canvas (fixed, full-screen background) -->
+  <canvas id="webgl"></canvas>
+
+  <!-- Progress rail -->
+  <div class="scroll-progress"><span id="scrollBar"></span></div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a class="nav__logo" href="#hero" data-cursor>◍ <span id="navName">NAME</span></a>
+    <div class="nav__right">
+      <nav class="nav__links">
+        <a href="#work" data-cursor>Work</a>
+        <a href="#writing" data-cursor>Writing</a>
+        <a href="#about" data-cursor>About</a>
+        <a href="#contact" data-cursor>Contact</a>
+      </nav>
+      <button class="nav__sound" id="soundToggle" aria-pressed="false" aria-label="Toggle ambient sound" data-cursor>
+        <span class="nav__sound-bars"><i></i><i></i><i></i><i></i></span>
+        <span class="nav__sound-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <main data-scroll-container>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero__inner">
+        <div class="hero__eyebrow reveal"><span data-eyebrow>PORTFOLIO — 2026</span></div>
+        <h1 class="hero__title">
+          <span class="line"><span data-h1a>WRITE.</span></span>
+          <span class="line"><span data-h1b>BUILD.</span></span>
+          <span class="line"><span data-h1c>SERVE.</span></span>
+        </h1>
+        <p class="hero__sub reveal" data-sub>
+          I design and build immersive digital experiences at the edge of
+          code, motion and 3D.
+        </p>
+      </div>
+      <div class="hero__scroll reveal">
+        <span>Scroll</span>
+        <i></i>
+      </div>
+    </section>
+
+    <!-- INTRO / MANIFESTO -->
+    <section class="intro" id="intro">
+      <p class="intro__text">
+        <span class="w">I</span> <span class="w">write</span>
+        <span class="w">things</span> <span class="w">worth</span>
+        <span class="w">reading</span> <span class="w">—</span>
+        <span class="w">and</span> <span class="w">build</span>
+        <span class="w">the</span> <span class="w">things</span>
+        <span class="w">that</span> <span class="w">carry</span>
+        <span class="w">them.</span>
+      </p>
+    </section>
+
+    <!-- CHAPTERS — 3D flythrough: cards come toward you as you scroll -->
+    <section class="chapters" id="work">
+      <div class="chapters__sticky">
+        <canvas class="chapters__gl" id="chapters-gl"></canvas>
+        <div class="chapters__ui">
+          <div class="chapters__head">
+            <span class="section-head__num">01</span>
+            <span class="chapters__label">Chapters</span>
+          </div>
+          <div class="chapters__focus" id="chFocus">
+            <span class="chapters__kicker" id="chKicker"></span>
+            <h2 class="chapters__title" id="chTitle"></h2>
+            <p class="chapters__blurb" id="chBlurb"></p>
+            <button class="chapters__open" id="chOpen" data-cursor>Explore <i>→</i></button>
+          </div>
+          <div class="chapters__rail" id="chRail"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WRITING -->
+    <section class="writing" id="writing">
+      <div class="section-head">
+        <span class="section-head__num">02</span>
+        <h2 class="section-head__title reveal-up">Writing</h2>
+      </div>
+      <div class="writing-list" id="writing-list">
+        <!-- injected from js -->
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="section-head">
+        <span class="section-head__num">03</span>
+        <h2 class="section-head__title reveal-up">About</h2>
+      </div>
+      <div class="about__grid">
+        <div class="about__bio">
+          <p class="reveal-up" data-bio-1></p>
+          <p class="reveal-up" data-bio-2></p>
+        </div>
+        <div class="about__meta">
+          <div class="about__block">
+            <span class="about__k">Focus</span>
+            <ul id="focusList"></ul>
+          </div>
+          <div class="about__block">
+            <span class="about__k">Toolkit</span>
+            <ul id="toolkitList"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <canvas class="contact__fx" id="contactFx" aria-hidden="true"></canvas>
+      <div class="contact__inner">
+        <span class="contact__label reveal-up">Let's build something</span>
+        <a class="contact__email reveal-up" id="contactEmail" href="#" data-cursor>email</a>
+        <div class="contact__socials" id="socials"></div>
+      </div>
+      <footer class="footer">
+        <span id="footName">Name</span>
+        <span>© <span id="year"></span> — McKinney, Texas</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- CHAPTER DETAIL OVERLAY -->
+  <div class="detail" id="detail" aria-hidden="true">
+    <div class="detail__scroll">
+      <button class="detail__close" id="detailClose" aria-label="Close" data-cursor>✕</button>
+      <div class="detail__inner">
+        <header class="detail__header">
+          <span class="detail__kicker" id="dKicker"></span>
+          <h2 class="detail__title" id="dTitle"></h2>
+          <p class="detail__lede" id="dLede"></p>
+        </header>
+
+        <div class="detail__grid">
+          <div class="detail__body" id="dBody"></div>
+          <aside class="detail__side">
+            <div class="detail__modelwrap">
+              <canvas class="detail__model" id="dModel"></canvas>
+            </div>
+            <dl class="detail__stats" id="dStats"></dl>
+          </aside>
+        </div>
+
+        <div class="detail__mediahead" id="dMediaHead">Photos &amp; Screenshots</div>
+        <div class="detail__media" id="dMedia"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
