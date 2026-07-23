@@ -32,6 +32,18 @@ const CONTENT = {
 
   email: "arpeet.s.shah@gmail.com",
 
+  // "Now" — what you're focused on this season. Update the date + items freely.
+  now: {
+    lede: "What I'm focused on right now.",
+    updated: "Updated July 2026",
+    items: [
+      "Keeping The Pulse's every-Sunday streak alive and growing readership.",
+      "Landing Orvexa's first clients and sharpening our content playbook.",
+      "Training for tennis season and staying sharp in cricket.",
+      "Saturdays at the mandir — and building toward the pre-med path.",
+    ],
+  },
+
   /* ----------------------------------------------------------
      CHAPTERS — the 3D cards that fly toward you.
      Each one is an aspect of your life. Everything marked
@@ -329,6 +341,13 @@ function hydrate() {
   list("focusList", CONTENT.focus);
   list("toolkitList", CONTENT.toolkit);
 
+  // Now section
+  if (CONTENT.now) {
+    $("nowLede").textContent = CONTENT.now.lede;
+    $("nowUpdated").textContent = CONTENT.now.updated;
+    $("nowList").innerHTML = CONTENT.now.items.map((x) => `<li>${x}</li>`).join("");
+  }
+
   $("writing-list").innerHTML = CONTENT.writing
     .map(
       (a) => `
@@ -385,12 +404,18 @@ function initCursor() {
 /* ---------------- Preloader ---------------- */
 function preload() {
   return new Promise((resolve) => {
-    const pct = $("loadPct"), bar = $("loadBar");
+    const pct = $("loadPct");
+    const ekg = $("loadEkg");
+    const len = ekg ? ekg.getTotalLength() : 0;
+    if (ekg) {
+      ekg.style.strokeDasharray = len;
+      ekg.style.strokeDashoffset = len;
+    }
     let p = 0;
     const tick = () => {
       p = Math.min(100, p + Math.random() * 12 + 4);
       pct.textContent = Math.floor(p);
-      bar.style.width = p + "%";
+      if (ekg) ekg.style.strokeDashoffset = len * (1 - p / 100);
       if (p < 100) setTimeout(tick, 90);
       else setTimeout(resolve, 250);
     };
