@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arpeet Shah — Résumé</title>
+  <meta name="description" content="Résumé of Arpeet Shah — writer, founder, and athlete in McKinney, Texas." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=general-sans@400,500,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #05060a; --panel: #0b0d14; --fg: #eef0f4; --muted: #8b90a0;
+      --line: rgba(255,255,255,0.10); --accent: #6ee7ff; --accent2: #b98bff;
+      --disp: "Clash Display","Space Grotesk",system-ui,sans-serif;
+      --body: "General Sans","Inter",system-ui,sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: var(--body); line-height: 1.5; -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 940px; margin: 0 auto; padding: clamp(28px,5vw,64px); }
+
+    /* toolbar (screen only) */
+    .bar {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      padding: 16px clamp(20px,4vw,40px);
+      background: rgba(5,6,10,0.8); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .bar a, .bar button {
+      font-family: var(--body); font-size: 13px; letter-spacing: 0.04em;
+      color: var(--fg); background: none; border: 1px solid var(--line);
+      border-radius: 100px; padding: 9px 18px; cursor: pointer;
+      transition: background .3s, color .3s, border-color .3s;
+    }
+    .bar .print { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+    .bar a:hover { border-color: rgba(255,255,255,0.4); }
+
+    /* header */
+    .head { border-bottom: 1px solid var(--line); padding-bottom: 26px; margin-bottom: 30px; }
+    .name { font-family: var(--disp); font-weight: 700; font-size: clamp(38px,7vw,68px); letter-spacing: -0.03em; line-height: 0.95; margin: 0; }
+    .role { margin: 12px 0 0; font-size: clamp(14px,1.6vw,17px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+    .ekg { display:block; width: 190px; height: 22px; margin: 16px 0 18px; overflow: visible; }
+    .ekg path { fill:none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .contact { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--muted); }
+    .contact a:hover { color: var(--fg); }
+    .contact b { color: var(--fg); font-weight: 500; }
+
+    /* summary */
+    .summary { font-family: var(--disp); font-weight: 400; font-size: clamp(17px,2vw,22px); line-height: 1.45; color: var(--fg); opacity: 0.9; margin: 0 0 34px; max-width: 62ch; }
+
+    /* grid */
+    .grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: clamp(28px,5vw,56px); align-items: start; }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+    h2.sec { font-family: var(--disp); font-weight: 600; font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent2); margin: 0 0 16px; }
+    .block + .block { margin-top: 30px; }
+
+    .job { padding: 0 0 20px; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+    .job:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .job__top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+    .job__title { font-family: var(--disp); font-weight: 600; font-size: 20px; letter-spacing: -0.01em; margin: 0; }
+    .job__meta { font-size: 13px; color: var(--muted); white-space: nowrap; }
+    .job__org { font-size: 14px; color: var(--accent); margin: 2px 0 10px; }
+    .job ul { margin: 0; padding: 0; list-style: none; }
+    .job li { position: relative; padding-left: 18px; font-size: 14.5px; color: #c9cdd8; margin: 7px 0; line-height: 1.5; }
+    .job li::before { content: "›"; position: absolute; left: 0; color: var(--accent); }
+
+    .side .block { padding: 0; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { font-size: 13px; color: var(--fg); border: 1px solid var(--line); border-radius: 100px; padding: 6px 13px; }
+    .side .line { padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+    .side .line:last-child { border-bottom: none; }
+    .side .line b { display: block; color: var(--fg); font-weight: 500; }
+    .side .line span { color: var(--muted); font-size: 13px; }
+    .linklist a { display: block; padding: 7px 0; font-size: 14px; color: #c9cdd8; border-bottom: 1px solid var(--line); }
+    .linklist a:last-child { border-bottom: none; }
+    .linklist a:hover { color: var(--accent); }
+
+    .foot { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+    .edit { color: var(--accent2); }
+
+    /* ---------- PRINT: clean, light, ATS-friendly one/two-pager ---------- */
+    @media print {
+      @page { margin: 14mm; }
+      html, body { background: #fff !important; color: #111 !important; }
+      .bar { display: none !important; }
+      .wrap { max-width: none; padding: 0; }
+      .name { color: #0a0a0a !important; }
+      .role { color: #0067a3 !important; }
+      .summary { color: #222 !important; opacity: 1; }
+      .head, .job, .side .line, .linklist a { border-color: #ddd !important; }
+      .ekg path { stroke: #0067a3 !important; }
+      h2.sec { color: #6b3fb0 !important; }
+      .job__org { color: #0067a3 !important; }
+      .job li { color: #222 !important; }
+      .job li::before { color: #0067a3 !important; }
+      .tag { color: #111 !important; border-color: #bbb !important; }
+      .side .line b { color: #111 !important; }
+      .side .line span, .job__meta, .foot { color: #555 !important; }
+      .linklist a { color: #222 !important; }
+      .contact, .contact b { color: #111 !important; }
+      .job { break-inside: avoid; }
+      .edit { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <a href="index.html" data-cursor>← Back to portfolio</a>
+    <button class="print" onclick="window.print()">Download PDF ↓</button>
+  </div>
+
+  <div class="wrap">
+    <header class="head">
+      <h1 class="name">Arpeet Shah</h1>
+      <p class="role">Writer · Founder · Athlete</p>
+      <svg class="ekg" viewBox="0 0 190 22" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 11 H70 l4 -9 l5 18 l5 -14 l3 5 H190" />
+      </svg>
+      <div class="contact">
+        <span>McKinney, Texas</span>
+        <a href="mailto:arpeet.s.shah@gmail.com"><b>arpeet.s.shah@gmail.com</b></a>
+        <a href="https://arpeetshah.github.io" target="_blank"><b>arpeetshah.github.io</b></a>
+        <span>@read_thepulse</span>
+      </div>
+    </header>
+
+    <p class="summary">
+      High school writer, founder, and athlete. I founded and run <b>The Pulse</b>, a weekly
+      publication for high schoolers, and co-founded <b>Orvexa</b>, a social-media marketing
+      agency for local businesses. National-level cricketer and high-school tennis player,
+      working toward a career in medicine.
+    </p>
+
+    <div class="grid">
+      <main>
+        <div class="block">
+          <h2 class="sec">Ventures &amp; Experience</h2>
+
+          <div class="job">
+            <div class="job__top">
+              <h3 class="job__title">The Pulse — Founder, Writer &amp; Developer</h3>
+              <span class="job__meta">2025 – Present</span>
+            </div>
+            <div class="job__org">A weekly publication for high schoolers · thepulse</div>
+            <ul>
+              <li>Founded and single-handedly run a weekly publication covering sports, money, mental health, science, and local news.</li>
+              <li>Research, write, edit, and fact-check every issue with cited sources; publish every Sunday.</li>
+              <li>Designed and coded the website from scratch (HTML, CSS, JavaScript) and run the brand on Instagram &amp; TikTok.</li>
+            </ul>
+          </div>
+
+          <div class="job">
+            <div class="job__top">
+              <h3 class="job__title">Orvexa Media Strategies — Co-Founder &amp; Content Lead</h3>
+              <span class="job__meta">Present</span>
+            </div>
+            <div class="job__org">Social-media marketing agency for small local businesses</div>
+            <ul>
+              <li>Co-founded a social-first growth studio helping local businesses build a marketing presence that reflects their quality.</li>
+              <li>Lead content creation: strategy, production, and brand voice across client accounts.</li>
+              <li>Currently pitching and onboarding the agency's first clients.</li>
+            </ul>
+          </div>
+
+          <div class="job">
+            <div class="job__top">
+              <h3 class="job__title">Volunteer Tutor</h3>
+              <span class="job__meta">Ongoing</span>
+            </div>
+            <div class="job__org">Free 1-on-1 tutoring for younger students</div>
+            <ul>
+              <li>Provide free tutoring to younger students who need help — done for them, not for pay.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2 class="sec">Athletics</h2>
+          <div class="job">
+            <div class="job__top">
+              <h3 class="job__title">Cricket — National Tournament Competitor</h3>
+              <span class="job__meta">7 years</span>
+            </div>
+            <ul><li>Competed at national tournaments; named tournament MVP multiple times.</li></ul>
+          </div>
+          <div class="job">
+            <div class="job__top">
+              <h3 class="job__title">Tennis — Emerson High School Team</h3>
+              <span class="job__meta">3 years</span>
+            </div>
+            <ul><li>Member of the Emerson High School tennis team; multiple tournament titles.</li></ul>
+          </div>
+        </div>
+      </main>
+
+      <aside class="side">
+        <div class="block">
+          <h2 class="sec">Skills</h2>
+          <div class="tags">
+            <span class="tag">Writing &amp; Journalism</span>
+            <span class="tag">Content &amp; Marketing</span>
+            <span class="tag">Research</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">HTML / CSS</span>
+            <span class="tag">Three.js</span>
+            <span class="tag">Python</span>
+            <span class="tag">Figma</span>
+            <span class="tag">Editing</span>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2 class="sec">Service</h2>
+          <div class="line">
+            <b>Seva — BAPS Shri Swaminarayan Mandir</b>
+            <span>Volunteering ~7 hours weekly</span>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2 class="sec">Education</h2>
+          <div class="line">
+            <b>Emerson High School</b>
+            <span>McKinney, Texas · Class of <span class="edit">[YEAR — tell me]</span></span>
+          </div>
+          <div class="line">
+            <b>Goal: Medicine (Pre-Med)</b>
+            <span>Aspiring physician · target: Johns Hopkins University</span>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2 class="sec">Links</h2>
+          <div class="linklist">
+            <a href="https://arpeetshah.github.io" target="_blank">Portfolio — arpeetshah.github.io</a>
+            <a href="https://arpeetshah.github.io/the-pulse/" target="_blank">The Pulse</a>
+            <a href="https://arpeetshah.github.io/orvexa/" target="_blank">Orvexa Media Strategies</a>
+            <a href="https://github.com/arpeetShah" target="_blank">GitHub — @arpeetShah</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <p class="foot">
+      Arpeet Shah · McKinney, Texas · arpeet.s.shah@gmail.com
+      <span class="edit"> &nbsp;— To export: click “Download PDF”, then choose “Save as PDF”.</span>
+    </p>
+  </div>
+</body>
+</html>

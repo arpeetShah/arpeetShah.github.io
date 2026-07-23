@@ -85,6 +85,7 @@ const CONTENT = {
       kicker: "The Business",
       color: "#ffb26e",
       model: "box",
+      link: { label: "Visit Orvexa", url: "https://arpeetshah.github.io/orvexa/" },
       blurb: "A social media marketing agency I co-founded to get small local businesses seen.",
       lede: "Great local businesses lose to whoever posts better. We're trying to fix that.",
       body: [
@@ -302,10 +303,11 @@ const CONTENT = {
   // never dead links. Paste a real URL in and it appears.
   socials: [
     { label: "The Pulse", url: "https://arpeetshah.github.io/the-pulse/" },
+    { label: "Orvexa", url: "https://arpeetshah.github.io/orvexa/" },
     { label: "GitHub", url: "https://github.com/arpeetShah" },
-    { label: "Orvexa", url: "#" },      // TODO: Orvexa site
-    { label: "Instagram", url: "#" },   // TODO: instagram.com/yourhandle
-    { label: "TikTok", url: "#" },      // TODO: tiktok.com/@yourhandle
+    { label: "Instagram", url: "https://www.instagram.com/read_thepulse/" },
+    { label: "TikTok", url: "https://www.tiktok.com/@read_thepulse" },
+    { label: "Résumé", url: "resume.html" },
     { label: "Email", url: "mailto:arpeet.s.shah@gmail.com" },
   ],
 };
