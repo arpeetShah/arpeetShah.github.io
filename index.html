@@ -40,6 +40,15 @@
 </head>
 <body>
 
+  <!-- Scroll-driven background: white at the top, darkening to black -->
+  <div class="bg-fade" id="bgFade" aria-hidden="true"></div>
+
+  <!-- Heartbeat that flows down the page with your scroll -->
+  <div class="scroll-spine" id="spine" aria-hidden="true">
+    <span class="scroll-spine__fill" id="spineFill"></span>
+    <span class="scroll-spine__dot" id="spineDot"></span>
+  </div>
+
   <!-- Grain + vignette overlays for cinematic depth -->
   <div class="grain" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
@@ -259,6 +268,6 @@
     </div>
   </div>
 
-  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/main.js?b=28"></script>
 </body>
 </html>

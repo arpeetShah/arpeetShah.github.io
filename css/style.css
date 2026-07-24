@@ -46,12 +46,24 @@ h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 600; lett
 ul { margin: 0; padding: 0; list-style: none; }
 
 /* ---------- WebGL canvas ---------- */
+/* Background fade: white (top) -> black (rest), driven by scroll */
+.bg-fade {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, #ffffff 0%, #ffffff 40%, #05060a 62%, #05060a 100%);
+  background-size: 100% 260%;
+  background-position: 0% 0%;
+}
+
 #webgl {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 0;
+  z-index: 1;
+  opacity: 0;
   pointer-events: none;
   display: block;
 }
@@ -60,14 +72,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 .vignette {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
+  opacity: 0;
   pointer-events: none;
   background: radial-gradient(120% 90% at 50% 42%, transparent 55%, rgba(0, 0, 0, 0.65) 100%);
 }
 .grain {
   position: fixed;
   inset: -50%;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -237,8 +250,57 @@ ul { margin: 0; padding: 0; list-style: none; }
 .nav__links a:hover::after { transform: scaleX(1); transform-origin: left; }
 @media (max-width: 640px) { .nav__links { gap: 18px; } .nav__links a { font-size: 12px; } }
 
+/* ---------- Scroll-following heartbeat spine ---------- */
+.scroll-spine {
+  position: fixed;
+  left: clamp(16px, 3vw, 42px);
+  top: 0;
+  height: 100vh;
+  width: 2px;
+  z-index: 350;
+  pointer-events: none;
+}
+.scroll-spine::before {
+  content: "";
+  position: absolute;
+  left: 0.5px;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: var(--ink, #eef0f4);
+  opacity: 0.16;
+}
+.scroll-spine__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 0%;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-2), var(--accent-3));
+  box-shadow: 0 0 9px rgba(110, 231, 255, 0.55);
+}
+.scroll-spine__dot {
+  position: absolute;
+  left: 1px;
+  top: 0%;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px 3px rgba(110, 231, 255, 0.85);
+  animation: spineBeat 1.5s ease-in-out infinite;
+}
+@keyframes spineBeat {
+  0%, 40%, 100% { transform: scale(1); }
+  12% { transform: scale(1.55); }
+  24% { transform: scale(1); }
+  32% { transform: scale(1.35); }
+}
+@media (max-width: 900px) { .scroll-spine { display: none; } }
+
 /* ---------- Layout helpers ---------- */
-main { position: relative; z-index: 3; }
+main { position: relative; z-index: 5; }
 section { position: relative; padding: 0 var(--pad); }
 
 .section-head {
@@ -272,7 +334,8 @@ section { position: relative; padding: 0 var(--pad); }
   font-size: 13px;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink, var(--muted));
+  opacity: 0.6;
   margin-bottom: 26px;
 }
 .hero__title {
@@ -280,6 +343,7 @@ section { position: relative; padding: 0 var(--pad); }
   line-height: 0.88;
   font-weight: 600;
   letter-spacing: -0.03em;
+  color: var(--ink, var(--fg));
 }
 .hero__title .line { display: block; overflow: hidden; }
 .hero__title .line span { display: block; }
@@ -287,7 +351,8 @@ section { position: relative; padding: 0 var(--pad); }
   margin-top: clamp(24px, 4vw, 42px);
   max-width: 30ch;
   font-size: clamp(16px, 1.6vw, 21px);
-  color: var(--muted);
+  color: var(--ink, var(--muted));
+  opacity: 0.72;
 }
 .hero__scroll {
   max-width: var(--max);
@@ -299,11 +364,12 @@ section { position: relative; padding: 0 var(--pad); }
   font-size: 12px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--ink, var(--muted));
+  opacity: 0.65;
 }
 .hero__scroll i {
   width: 46px; height: 1px;
-  background: var(--muted);
+  background: currentColor;
   position: relative;
   overflow: hidden;
 }

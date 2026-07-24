@@ -603,11 +603,37 @@ function initScroll(scene, chapters) {
 
   const scrollBar = $("scrollBar");
   const workSection = $("work");
+  const bgFade = $("bgFade");
+  const webgl = $("webgl");
+  const vignette = document.querySelector(".vignette");
+  const spineFill = $("spineFill");
+  const spineDot = $("spineDot");
+  const root = document.documentElement;
 
-  const onScroll = ({ scroll, limit }) => {
+  const hex = (h) => [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const INK_DARK = hex("05060a"), INK_LIGHT = hex("eef0f4");
+  const mixInk = (t) =>
+    `rgb(${INK_DARK.map((c, i) => Math.round(c + (INK_LIGHT[i] - c) * t)).join(",")})`;
+
+  const onScroll = () => {
+    const scroll = Number.isFinite(lenis.scroll) ? lenis.scroll : window.scrollY || 0;
+    const limit = lenis.limit > 0 ? lenis.limit : document.body.scrollHeight - window.innerHeight;
     const t = limit > 0 ? scroll / limit : 0;
     scene.setProgress(t);
     scrollBar.style.width = t * 100 + "%";
+
+    // white -> black transition over the first ~0.85 viewport of scroll
+    const vh = window.innerHeight;
+    const denom = vh * 0.85;
+    const fade = denom > 0 ? Math.min(Math.max(scroll / denom, 0), 1) : 0;
+    bgFade.style.backgroundPositionY = fade * 100 + "%";
+    webgl.style.opacity = fade;
+    vignette.style.opacity = fade;
+    root.style.setProperty("--ink", mixInk(Math.min(fade * 1.35, 1)));
+
+    // heartbeat spine flows with total scroll
+    spineFill.style.height = t * 100 + "%";
+    spineDot.style.top = t * 100 + "%";
 
     if (chapters) {
       const rect = workSection.getBoundingClientRect();
@@ -616,7 +642,10 @@ function initScroll(scene, chapters) {
     }
   };
   lenis.on("scroll", onScroll);
-  onScroll({ scroll: window.scrollY, limit: document.body.scrollHeight - window.innerHeight });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+  requestAnimationFrame(onScroll);
+  setTimeout(onScroll, 400);
 
   const introTl = gsap.timeline({ defaults: { ease: "expo.out" } });
   introTl
