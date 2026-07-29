@@ -2,49 +2,26 @@ import * as THREE from "three";
 
 /* ============================================================
    3D chapter flythrough.
-   Cards live in depth along -Z. Scroll pulls them toward the
-   camera: they appear small in the bottom-right, sweep in to
-   centre as they reach the focus plane, then pass by and fade.
-   Click a card to open its detail view.
+   Each chapter is a rotating 3D object (its signature geometry)
+   living in depth along -Z. Scroll pulls them toward the camera:
+   they rise in from the lower-right, grow and centre at the focus
+   plane, then pass by and fade. Click the focused one to open it.
    ============================================================ */
 
-const SPACING = 6;      // world units between cards
-const FOCUS_DIST = 4.6; // distance from camera where a card is "in focus"
-const CARD_W = 3.5;
-const CARD_H = 2.2;
+const SPACING = 6;
+const FOCUS_DIST = 5.2;
 
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
-}
-
-function hexA(hex, a) {
-  const h = hex.replace("#", "");
-  return `rgba(${parseInt(h.slice(0, 2), 16)},${parseInt(h.slice(2, 4), 16)},${parseInt(h.slice(4, 6), 16)},${a})`;
-}
-
-function wrap(ctx, text, maxW) {
-  const words = text.split(" ");
-  const lines = [];
-  let line = "";
-  for (const w of words) {
-    const test = line ? line + " " + w : w;
-    if (ctx.measureText(test).width > maxW && line) {
-      lines.push(line);
-      line = w;
-    } else line = test;
+function makeGeometry(kind) {
+  switch (kind) {
+    case "torusKnot": return new THREE.TorusKnotGeometry(0.68, 0.22, 180, 28);
+    case "octahedron": return new THREE.OctahedronGeometry(1.15, 0);
+    case "torus": return new THREE.TorusGeometry(0.8, 0.3, 26, 90);
+    case "box": return new THREE.BoxGeometry(1.4, 1.4, 1.4);
+    case "sphere": return new THREE.SphereGeometry(1.08, 48, 32);
+    case "dodecahedron": return new THREE.DodecahedronGeometry(1.12, 0);
+    case "icosahedron":
+    default: return new THREE.IcosahedronGeometry(1.15, 0);
   }
-  if (line) lines.push(line);
-  return lines;
 }
 
 export default class Chapters {
@@ -60,18 +37,14 @@ export default class Chapters {
     this.hovered = -1;
     this.mouse = new THREE.Vector2(0, 0);
     this.mouseTarget = new THREE.Vector2(0, 0);
-    this.pointer = new THREE.Vector2(-2, -2); // NDC for raycast
+    this.pointer = new THREE.Vector2(-2, -2);
     this.clock = new THREE.Clock();
 
     this._init();
   }
 
   _init() {
-    this.renderer = new THREE.WebGLRenderer({
-      canvas: this.canvas,
-      antialias: true,
-      alpha: true,
-    });
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
     this.renderer.setClearColor(0x000000, 0);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -79,88 +52,60 @@ export default class Chapters {
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 300);
     this.camera.position.set(0, 0, 0);
 
+    // lighting
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const key = new THREE.DirectionalLight(0xffffff, 1.5);
+    key.position.set(3, 4, 5);
+    this.scene.add(key);
+    const fill = new THREE.DirectionalLight(0x88aaff, 0.6);
+    fill.position.set(-4, -2, 2);
+    this.scene.add(fill);
+
     this.group = new THREE.Group();
     this.scene.add(this.group);
 
     this.raycaster = new THREE.Raycaster();
-    this.cards = [];
+    this.cards = [];      // one wrapper group per chapter
+    this.solids = [];     // solid meshes for raycasting
 
-    const geo = new THREE.PlaneGeometry(CARD_W, CARD_H, 1, 1);
     this.chapters.forEach((ch, i) => {
-      const mat = new THREE.MeshBasicMaterial({
-        map: this._makeCardTexture(ch, i),
-        transparent: true,
-        depthWrite: false,
-        side: THREE.DoubleSide,
-      });
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.z = -(FOCUS_DIST + i * SPACING);
-      mesh.userData.index = i;
-      this.group.add(mesh);
-      this.cards.push(mesh);
+      const geo = makeGeometry(ch.model);
+      const col = new THREE.Color(ch.color || "#6ee7ff");
+      const flat = ["icosahedron", "octahedron", "dodecahedron"].includes(ch.model);
+
+      const solid = new THREE.Mesh(
+        geo,
+        new THREE.MeshStandardMaterial({
+          color: col,
+          emissive: col.clone().multiplyScalar(0.28),
+          metalness: 0.45,
+          roughness: 0.32,
+          flatShading: flat,
+          transparent: true,
+          opacity: 1,
+        })
+      );
+      const wire = new THREE.LineSegments(
+        new THREE.WireframeGeometry(geo),
+        new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.14 })
+      );
+      solid.add(wire);
+
+      const wrap = new THREE.Group();
+      wrap.add(solid);
+      wrap.position.z = -(FOCUS_DIST + i * SPACING);
+      wrap.userData.index = i;
+      wrap.userData.spin = 0.004 + (i % 3) * 0.0018;
+
+      this.group.add(wrap);
+      this.cards.push(wrap);
+      solid.userData.index = i;
+      this.solids.push(solid);
     });
 
     this._bind();
     this.resize();
     this._loop();
-  }
-
-  _makeCardTexture(ch, i) {
-    const W = 1024, H = 644;
-    const c = document.createElement("canvas");
-    c.width = W; c.height = H;
-    const ctx = c.getContext("2d");
-    const color = ch.color || "#6ee7ff";
-    const pad = 18;
-    const r = 34;
-
-    // glass panel
-    roundRect(ctx, pad, pad, W - pad * 2, H - pad * 2, r);
-    const g = ctx.createLinearGradient(pad, pad, W - pad, H - pad);
-    g.addColorStop(0, hexA(color, 0.22));
-    g.addColorStop(0.55, "rgba(10,12,18,0.92)");
-    g.addColorStop(1, "rgba(6,7,11,0.96)");
-    ctx.fillStyle = g;
-    ctx.fill();
-
-    // glow border
-    ctx.strokeStyle = hexA(color, 0.5);
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // corner accent
-    const rg = ctx.createRadialGradient(W * 0.16, H * 0.16, 0, W * 0.16, H * 0.16, W * 0.5);
-    rg.addColorStop(0, hexA(color, 0.3));
-    rg.addColorStop(1, "rgba(0,0,0,0)");
-    roundRect(ctx, pad, pad, W - pad * 2, H - pad * 2, r);
-    ctx.fillStyle = rg;
-    ctx.fill();
-
-    // index
-    ctx.fillStyle = hexA(color, 0.9);
-    ctx.font = '600 26px Inter, Arial, sans-serif';
-    ctx.textBaseline = "top";
-    ctx.fillText(String(i + 1).padStart(2, "0"), 64, 62);
-
-    // kicker
-    ctx.fillStyle = "rgba(255,255,255,0.5)";
-    ctx.font = '500 22px Inter, Arial, sans-serif';
-    ctx.fillText((ch.kicker || "").toUpperCase(), 118, 64);
-
-    // title
-    ctx.fillStyle = "#f2f4f8";
-    ctx.font = '700 76px Inter, Arial, sans-serif';
-    const lines = wrap(ctx, ch.title, W - 150);
-    lines.slice(0, 3).forEach((ln, k) => ctx.fillText(ln, 64, 170 + k * 82));
-
-    // hint
-    ctx.fillStyle = hexA(color, 0.95);
-    ctx.font = '600 24px Inter, Arial, sans-serif';
-    ctx.fillText("EXPLORE  →", 64, H - 110);
-
-    const t = new THREE.CanvasTexture(c);
-    t.anisotropy = 4;
-    return t;
   }
 
   setProgress(p) { this.progressTarget = THREE.MathUtils.clamp(p, 0, 1); }
@@ -182,6 +127,11 @@ export default class Chapters {
       else if (this.focused >= 0) this.onSelect(this.focused);
     });
     window.addEventListener("resize", () => this.resize());
+    // self-correct if the canvas is sized after construction (e.g. late layout)
+    if (window.ResizeObserver) {
+      this._ro = new ResizeObserver(() => this.resize());
+      this._ro.observe(this.canvas);
+    }
   }
 
   resize() {
@@ -194,38 +144,44 @@ export default class Chapters {
 
   _loop() {
     const t = this.clock.getElapsedTime();
-
     this.progress += (this.progressTarget - this.progress) * 0.08;
     this.mouse.lerp(this.mouseTarget, 0.06);
 
-    // pull the whole stack toward the camera
     const travel = (this.chapters.length - 1) * SPACING + SPACING * 0.9;
     this.group.position.z = this.progress * travel;
 
     let bestIdx = -1;
     let bestAbs = Infinity;
 
-    this.cards.forEach((card, i) => {
-      const worldZ = card.position.z + this.group.position.z;
-      const dz = worldZ + FOCUS_DIST; // 0 when exactly at focus plane
+    this.cards.forEach((wrap, i) => {
+      const worldZ = wrap.position.z + this.group.position.z;
+      const dz = worldZ + FOCUS_DIST; // 0 at focus plane
 
-      // k: 0 at focus, 1 when far away in the distance
+      // k: 0 at focus, 1 far away in the distance
       const k = THREE.MathUtils.clamp(-dz / (SPACING * 2.1), 0, 1);
 
-      // sweep in from the bottom-right
-      card.position.x = k * 5.0 + this.mouse.x * 0.25 * (1 - k);
-      card.position.y = -k * 3.2 + Math.sin(t * 0.5 + i) * 0.06 + this.mouse.y * 0.18 * (1 - k);
-      card.rotation.y = -k * 0.55 - this.mouse.x * 0.06;
-      card.rotation.z = k * 0.1;
-      card.rotation.x = this.mouse.y * 0.05;
+      // rise in from the lower-right, settle at centre
+      wrap.position.x = k * 4.6 + this.mouse.x * 0.3 * (1 - k);
+      wrap.position.y = -k * 3.0 + Math.sin(t * 0.5 + i) * 0.08 + this.mouse.y * 0.22 * (1 - k);
 
-      // opacity: fade in from deep space, fade out once past the camera
+      // scale up as it reaches focus
+      wrap.scale.setScalar(1.4 - k * 0.6);
+
+      // continuous tumble + mouse tilt
+      const solid = wrap.children[0];
+      solid.rotation.y += wrap.userData.spin;
+      solid.rotation.x = Math.sin(t * 0.4 + i) * 0.25 + this.mouse.y * 0.25 * (1 - k);
+      solid.rotation.z += wrap.userData.spin * 0.4;
+
+      // opacity: fade in from deep space, fade out past the camera
       let op;
-      if (dz > 0) op = 1 - dz / (SPACING * 0.75);           // passed focus, flying by
-      else op = 1 - THREE.MathUtils.smoothstep(-dz, SPACING * 2.2, SPACING * 3.4); // approaching
-      card.material.opacity = THREE.MathUtils.clamp(op, 0, 1);
-      card.visible = card.material.opacity > 0.01;
-      card.renderOrder = -Math.round(worldZ * 100);
+      if (dz > 0) op = 1 - dz / (SPACING * 0.7);
+      else op = 1 - THREE.MathUtils.smoothstep(-dz, SPACING * 2.2, SPACING * 3.4);
+      op = THREE.MathUtils.clamp(op, 0, 1);
+      solid.material.opacity = op;
+      solid.children[0].material.opacity = op * 0.16;
+      wrap.visible = op > 0.02;
+      wrap.renderOrder = -Math.round(worldZ * 100);
 
       if (Math.abs(dz) < bestAbs && dz < SPACING * 0.4) {
         bestAbs = Math.abs(dz);
@@ -243,7 +199,7 @@ export default class Chapters {
     if (this.pointer.x > -1.5) {
       this.raycaster.setFromCamera(this.pointer, this.camera);
       const hits = this.raycaster.intersectObjects(
-        this.cards.filter((c) => c.visible && c.material.opacity > 0.5)
+        this.solids.filter((s) => s.parent.visible && s.material.opacity > 0.5)
       );
       if (hits.length) hover = hits[0].object.userData.index;
     }

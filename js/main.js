@@ -1,5 +1,5 @@
 import Scene from "./scene.js";
-import Chapters from "./chapters.js";
+import Chapters from "./chapters.js?b=30";
 import ModelViewer from "./modelviewer.js";
 import Ambience from "./audio.js";
 import Fireworks from "./fireworks.js";
@@ -273,6 +273,16 @@ const CONTENT = {
 
   writing: [
     {
+      title: "How I Stopped Choking Under Pressure",
+      excerpt: "Losing points I should've won taught me that pressure isn't the enemy — panicking about the pressure is. Here's what actually helped.",
+      category: "Sports", cat: "sports", date: "June 1, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/choking-under-pressure.html",
+    },
+    {
+      title: "How to Actually Study — Not Just Reread Your Notes",
+      excerpt: "Rereading your notes feels productive and barely works. Here's what actually makes things stick — backed by real cognitive science.",
+      category: "Science", cat: "science", date: "May 25, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/how-to-actually-study.html",
+    },
+    {
       title: "You Don't Have to Choose Between Grades and Having Fun — You Just Have to Know When",
       excerpt: "Every high schooler is navigating the same tension. Here's what nobody tells you about handling it — and the research that backs it up.",
       category: "Mental Health", cat: "mental", date: "May 18, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/grades-and-fun.html",
@@ -286,11 +296,6 @@ const CONTENT = {
       title: "Why Your Brain Actually Works Differently After 10 PM",
       excerpt: "There's a reason late-night studying feels different. The science of your teen brain explains everything — including why you can't fall asleep.",
       category: "Science", cat: "science", date: "May 4, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/brain-at-night.html",
-    },
-    {
-      title: "The Truth About Getting Recruited That Nobody Told Me",
-      excerpt: "College sports recruitment is a game most high schoolers play without knowing the rules. Here's what I learned from coaches and athletes.",
-      category: "Sports", cat: "sports", date: "Apr 27, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/sports-recruiting-truth.html",
     },
     {
       title: "McKinney Has a Startup Scene and Most Locals Have No Idea",
@@ -381,25 +386,52 @@ function hydrate() {
 function initCursor() {
   const ring = document.querySelector(".cursor");
   const dot = document.querySelector(".cursor-dot");
+  const label = $("cursorLabel");
   if (!ring || matchMedia("(pointer: coarse)").matches) return;
 
   let x = innerWidth / 2, y = innerHeight / 2, rx = x, ry = y;
+  let hoverLabel = null;
   addEventListener("pointermove", (e) => { x = e.clientX; y = e.clientY; });
+
+  // what should the cursor say for a given clickable element?
+  const labelFor = (el) => {
+    if (el.closest(".article")) return "Read";
+    if (el.closest(".chapters__open, .detail__cta, .showcase__cta")) return "Open";
+    const explicit = el.getAttribute("data-cursor");
+    if (el.matches("a[href^='mailto']")) return "Email";
+    if (el.matches("a[target='_blank']")) return "Visit";
+    return explicit && explicit.length ? explicit : "View";
+  };
 
   const render = () => {
     rx += (x - rx) * 0.18;
     ry += (y - ry) * 0.18;
     ring.style.transform = `translate(${rx}px, ${ry}px)`;
     dot.style.transform = `translate(${x}px, ${y}px)`;
+
+    // clickable 3D chapter objects flag the body; surface an "Open" label
+    const cardHover = document.body.classList.contains("is-card-hover");
+    const text = cardHover ? "Open" : hoverLabel;
+    if (text) {
+      if (label.textContent !== text) label.textContent = text;
+      label.classList.add("show");
+      ring.classList.add("is-hover");
+    } else {
+      label.classList.remove("show");
+      if (!hoverLabel) ring.classList.remove("is-hover");
+    }
+    label.style.left = x + "px";
+    label.style.top = y + "px";
     requestAnimationFrame(render);
   };
   render();
 
   document.addEventListener("pointerover", (e) => {
-    if (e.target.closest("[data-cursor]")) ring.classList.add("is-hover");
+    const el = e.target.closest("[data-cursor]");
+    if (el) { ring.classList.add("is-hover"); hoverLabel = labelFor(el); }
   });
   document.addEventListener("pointerout", (e) => {
-    if (e.target.closest("[data-cursor]")) ring.classList.remove("is-hover");
+    if (e.target.closest("[data-cursor]")) { ring.classList.remove("is-hover"); hoverLabel = null; }
   });
 }
 
@@ -606,9 +638,18 @@ function initScroll(scene, chapters) {
   const bgFade = $("bgFade");
   const webgl = $("webgl");
   const vignette = document.querySelector(".vignette");
-  const spineFill = $("spineFill");
-  const spineDot = $("spineDot");
+  const heart = $("heart");
   const root = document.documentElement;
+
+  // heart flows down the page, easing toward the scroll position
+  let heartY = window.innerHeight * 0.08;
+  let heartTarget = heartY;
+  const heartLoop = () => {
+    heartY += (heartTarget - heartY) * 0.08;
+    if (heart) heart.style.top = heartY.toFixed(1) + "px";
+    requestAnimationFrame(heartLoop);
+  };
+  heartLoop();
 
   const hex = (h) => [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
   const INK_DARK = hex("05060a"), INK_LIGHT = hex("eef0f4");
@@ -631,9 +672,8 @@ function initScroll(scene, chapters) {
     vignette.style.opacity = fade;
     root.style.setProperty("--ink", mixInk(Math.min(fade * 1.35, 1)));
 
-    // heartbeat spine flows with total scroll
-    spineFill.style.height = t * 100 + "%";
-    spineDot.style.top = t * 100 + "%";
+    // heart flows down the viewport with total scroll progress
+    heartTarget = (0.08 + t * 0.84) * window.innerHeight;
 
     if (chapters) {
       const rect = workSection.getBoundingClientRect();
