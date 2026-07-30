@@ -1,5 +1,5 @@
 import Scene from "./scene.js";
-import Chapters from "./chapters.js?b=30";
+import Chapters from "./chapters.js?b=33";
 import ModelViewer from "./modelviewer.js";
 import Ambience from "./audio.js";
 import Fireworks from "./fireworks.js";
@@ -60,6 +60,7 @@ const CONTENT = {
       kicker: "What I Built",
       color: "#6ee7ff",
       model: "torusKnot",
+      image: "images/pulse-home.png",
       link: { label: "Read The Pulse", url: "https://arpeetshah.github.io/the-pulse/" },
       blurb: "A weekly publication for high schoolers — founded, researched, written and coded by me.",
       lede: "I couldn't find media written for people like me. So I built it.",
@@ -85,6 +86,7 @@ const CONTENT = {
       kicker: "The Business",
       color: "#ffb26e",
       model: "box",
+      image: "images/orvexa-1.png",
       link: { label: "Visit Orvexa", url: "https://arpeetshah.github.io/orvexa/" },
       blurb: "A social media marketing agency I co-founded to get small local businesses seen.",
       lede: "Great local businesses lose to whoever posts better. We're trying to fix that.",
@@ -108,6 +110,7 @@ const CONTENT = {
       kicker: "What I'm Building",
       color: "#ff7ac6",
       model: "icosahedron",
+      image: "images/portfolio-hero.png",
       link: { label: "See the code on GitHub", url: "https://github.com/arpeetShah" },
       blurb: "When the tool I need doesn't exist, I build it — sites, shaders, experiments.",
       lede: "I build the things that carry the writing.",

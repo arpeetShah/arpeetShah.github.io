@@ -1,27 +1,129 @@
 import * as THREE from "three";
 
 /* ============================================================
-   3D chapter flythrough.
-   Each chapter is a rotating 3D object (its signature geometry)
-   living in depth along -Z. Scroll pulls them toward the camera:
-   they rise in from the lower-right, grow and centre at the focus
-   plane, then pass by and fade. Click the focused one to open it.
+   3D work flythrough.
+   Each project is a floating "browser panel" that flies toward
+   the camera as you scroll — rises from the lower-right, grows
+   and centres at the focus plane, then passes by. Each panel
+   shows a real screenshot if one is provided, otherwise a clean
+   auto-generated mockup. Click the focused one to open it.
    ============================================================ */
 
 const SPACING = 6;
-const FOCUS_DIST = 5.2;
+const FOCUS_DIST = 5.0;
+const PW = 3.7, PH = 2.31;         // panel size (16:10)
+const TW = 1024, TH = 640;         // texture size
 
-function makeGeometry(kind) {
-  switch (kind) {
-    case "torusKnot": return new THREE.TorusKnotGeometry(0.68, 0.22, 180, 28);
-    case "octahedron": return new THREE.OctahedronGeometry(1.15, 0);
-    case "torus": return new THREE.TorusGeometry(0.8, 0.3, 26, 90);
-    case "box": return new THREE.BoxGeometry(1.4, 1.4, 1.4);
-    case "sphere": return new THREE.SphereGeometry(1.08, 48, 32);
-    case "dodecahedron": return new THREE.DodecahedronGeometry(1.12, 0);
-    case "icosahedron":
-    default: return new THREE.IcosahedronGeometry(1.15, 0);
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+function hexA(hex, a) {
+  const h = hex.replace("#", "");
+  return `rgba(${parseInt(h.slice(0, 2), 16)},${parseInt(h.slice(2, 4), 16)},${parseInt(h.slice(4, 6), 16)},${a})`;
+}
+function domainOf(url) {
+  if (!url) return "";
+  return url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+}
+function coverDraw(ctx, img, x, y, w, h) {
+  const ir = img.width / img.height, br = w / h;
+  let sw = img.width, sh = img.height, sx = 0, sy = 0;
+  if (ir > br) { sw = img.height * br; sx = (img.width - sw) / 2; }
+  else { sh = img.width / br; sy = (img.height - sh) / 2; }
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+}
+
+function drawPanel(canvas, ch, img) {
+  const ctx = canvas.getContext("2d");
+  const color = ch.color || "#6ee7ff";
+  const pad = 16, r = 34, barH = 62;
+  ctx.clearRect(0, 0, TW, TH);
+
+  // panel body
+  roundRect(ctx, pad, pad, TW - pad * 2, TH - pad * 2, r);
+  const g = ctx.createLinearGradient(0, pad, 0, TH - pad);
+  g.addColorStop(0, "#11141c");
+  g.addColorStop(1, "#0a0c12");
+  ctx.fillStyle = g;
+  ctx.fill();
+
+  // brand glow at top
+  ctx.save();
+  roundRect(ctx, pad, pad, TW - pad * 2, TH - pad * 2, r);
+  ctx.clip();
+  const rg = ctx.createRadialGradient(TW * 0.5, pad, 0, TW * 0.5, pad, TW * 0.7);
+  rg.addColorStop(0, hexA(color, 0.28));
+  rg.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = rg;
+  ctx.fillRect(0, 0, TW, TH);
+  ctx.restore();
+
+  // browser chrome bar
+  ctx.save();
+  roundRect(ctx, pad, pad, TW - pad * 2, TH - pad * 2, r);
+  ctx.clip();
+  ctx.fillStyle = "rgba(255,255,255,0.04)";
+  ctx.fillRect(pad, pad, TW - pad * 2, barH);
+  ["#ff5f57", "#febc2e", "#28c840"].forEach((c, k) => {
+    ctx.beginPath();
+    ctx.fillStyle = hexA(c, 0.85);
+    ctx.arc(pad + 34 + k * 26, pad + barH / 2, 7, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  // url pill
+  roundRect(ctx, pad + 130, pad + barH / 2 - 15, TW - pad * 2 - 160, 30, 15);
+  ctx.fillStyle = "rgba(255,255,255,0.05)";
+  ctx.fill();
+  ctx.fillStyle = "rgba(255,255,255,0.5)";
+  ctx.font = "500 20px Inter, Arial, sans-serif";
+  ctx.textBaseline = "middle";
+  ctx.fillText(domainOf(ch.link && ch.link.url), pad + 156, pad + barH / 2 + 1);
+
+  // content area (below the bar)
+  const cx = pad, cy = pad + barH, cw = TW - pad * 2, chH = TH - pad - cy;
+
+  if (img) {
+    coverDraw(ctx, img, cx, cy, cw, chH);
+  } else {
+    // ---- clean mockup ----
+    ctx.fillStyle = "#f2f4f8";
+    ctx.font = "700 72px Inter, Arial, sans-serif";
+    ctx.textBaseline = "top";
+    ctx.fillText(ch.title, cx + 48, cy + 54);
+
+    ctx.fillStyle = hexA(color, 0.95);
+    ctx.font = "600 24px Inter, Arial, sans-serif";
+    ctx.fillText((ch.kicker || "").toUpperCase(), cx + 50, cy + 30);
+
+    ctx.fillStyle = "rgba(255,255,255,0.45)";
+    ctx.font = "400 26px Inter, Arial, sans-serif";
+    const blurb = (ch.blurb || "").slice(0, 74);
+    ctx.fillText(blurb, cx + 48, cy + 148);
+
+    // faux content tiles
+    const ty = cy + 210;
+    for (let k = 0; k < 3; k++) {
+      roundRect(ctx, cx + 48 + k * ((cw - 96 - 40) / 3 + 20), ty, (cw - 96 - 40) / 3, 150, 16);
+      ctx.fillStyle = hexA(color, 0.13 + k * 0.05);
+      ctx.fill();
+    }
+    ctx.fillStyle = hexA(color, 0.9);
+    ctx.font = "600 24px Inter, Arial, sans-serif";
+    ctx.fillText("Explore  →", cx + 48, cy + chH - 56);
   }
+  ctx.restore();
+
+  // border
+  roundRect(ctx, pad, pad, TW - pad * 2, TH - pad * 2, r);
+  ctx.strokeStyle = hexA(color, 0.45);
+  ctx.lineWidth = 2;
+  ctx.stroke();
 }
 
 export default class Chapters {
@@ -52,55 +154,38 @@ export default class Chapters {
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 300);
     this.camera.position.set(0, 0, 0);
 
-    // lighting
-    this.scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-    const key = new THREE.DirectionalLight(0xffffff, 1.5);
-    key.position.set(3, 4, 5);
-    this.scene.add(key);
-    const fill = new THREE.DirectionalLight(0x88aaff, 0.6);
-    fill.position.set(-4, -2, 2);
-    this.scene.add(fill);
-
     this.group = new THREE.Group();
     this.scene.add(this.group);
 
     this.raycaster = new THREE.Raycaster();
-    this.cards = [];      // one wrapper group per chapter
-    this.solids = [];     // solid meshes for raycasting
+    this.cards = [];
 
+    const geo = new THREE.PlaneGeometry(PW, PH, 1, 1);
     this.chapters.forEach((ch, i) => {
-      const geo = makeGeometry(ch.model);
-      const col = new THREE.Color(ch.color || "#6ee7ff");
-      const flat = ["icosahedron", "octahedron", "dodecahedron"].includes(ch.model);
+      const canvas = document.createElement("canvas");
+      canvas.width = TW; canvas.height = TH;
+      drawPanel(canvas, ch, null);
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = 4;
 
-      const solid = new THREE.Mesh(
+      // upgrade to a real screenshot if one is provided
+      if (ch.image) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => { drawPanel(canvas, ch, img); tex.needsUpdate = true; };
+        img.src = ch.image;
+      }
+
+      const mesh = new THREE.Mesh(
         geo,
-        new THREE.MeshStandardMaterial({
-          color: col,
-          emissive: col.clone().multiplyScalar(0.28),
-          metalness: 0.45,
-          roughness: 0.32,
-          flatShading: flat,
-          transparent: true,
-          opacity: 1,
-        })
+        new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false })
       );
-      const wire = new THREE.LineSegments(
-        new THREE.WireframeGeometry(geo),
-        new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.14 })
-      );
-      solid.add(wire);
-
-      const wrap = new THREE.Group();
-      wrap.add(solid);
-      wrap.position.z = -(FOCUS_DIST + i * SPACING);
-      wrap.userData.index = i;
-      wrap.userData.spin = 0.004 + (i % 3) * 0.0018;
-
-      this.group.add(wrap);
-      this.cards.push(wrap);
-      solid.userData.index = i;
-      this.solids.push(solid);
+      mesh.position.z = -(FOCUS_DIST + i * SPACING);
+      mesh.userData.index = i;
+      mesh.userData.sway = Math.random() * 6.28;
+      this.group.add(mesh);
+      this.cards.push(mesh);
     });
 
     this._bind();
@@ -127,7 +212,6 @@ export default class Chapters {
       else if (this.focused >= 0) this.onSelect(this.focused);
     });
     window.addEventListener("resize", () => this.resize());
-    // self-correct if the canvas is sized after construction (e.g. late layout)
     if (window.ResizeObserver) {
       this._ro = new ResizeObserver(() => this.resize());
       this._ro.observe(this.canvas);
@@ -150,56 +234,38 @@ export default class Chapters {
     const travel = (this.chapters.length - 1) * SPACING + SPACING * 0.9;
     this.group.position.z = this.progress * travel;
 
-    let bestIdx = -1;
-    let bestAbs = Infinity;
+    let bestIdx = -1, bestAbs = Infinity;
 
-    this.cards.forEach((wrap, i) => {
-      const worldZ = wrap.position.z + this.group.position.z;
-      const dz = worldZ + FOCUS_DIST; // 0 at focus plane
-
-      // k: 0 at focus, 1 far away in the distance
+    this.cards.forEach((mesh, i) => {
+      const worldZ = mesh.position.z + this.group.position.z;
+      const dz = worldZ + FOCUS_DIST;
       const k = THREE.MathUtils.clamp(-dz / (SPACING * 2.1), 0, 1);
 
-      // rise in from the lower-right, settle at centre
-      wrap.position.x = k * 4.6 + this.mouse.x * 0.3 * (1 - k);
-      wrap.position.y = -k * 3.0 + Math.sin(t * 0.5 + i) * 0.08 + this.mouse.y * 0.22 * (1 - k);
+      mesh.position.x = k * 4.4 + this.mouse.x * 0.3 * (1 - k);
+      mesh.position.y = -k * 2.7 + Math.sin(t * 0.5 + mesh.userData.sway) * 0.07 + this.mouse.y * 0.2 * (1 - k);
+      mesh.scale.setScalar(1.32 - k * 0.5);
 
-      // scale up as it reaches focus
-      wrap.scale.setScalar(1.4 - k * 0.6);
+      // gentle 3/4 tilt + cursor parallax
+      mesh.rotation.y = -0.12 - k * 0.35 + this.mouse.x * 0.18 * (1 - k);
+      mesh.rotation.x = 0.03 + this.mouse.y * -0.12 * (1 - k);
 
-      // continuous tumble + mouse tilt
-      const solid = wrap.children[0];
-      solid.rotation.y += wrap.userData.spin;
-      solid.rotation.x = Math.sin(t * 0.4 + i) * 0.25 + this.mouse.y * 0.25 * (1 - k);
-      solid.rotation.z += wrap.userData.spin * 0.4;
-
-      // opacity: fade in from deep space, fade out past the camera
       let op;
       if (dz > 0) op = 1 - dz / (SPACING * 0.7);
       else op = 1 - THREE.MathUtils.smoothstep(-dz, SPACING * 2.2, SPACING * 3.4);
-      op = THREE.MathUtils.clamp(op, 0, 1);
-      solid.material.opacity = op;
-      solid.children[0].material.opacity = op * 0.16;
-      wrap.visible = op > 0.02;
-      wrap.renderOrder = -Math.round(worldZ * 100);
+      mesh.material.opacity = THREE.MathUtils.clamp(op, 0, 1);
+      mesh.visible = mesh.material.opacity > 0.02;
+      mesh.renderOrder = -Math.round(worldZ * 100);
 
-      if (Math.abs(dz) < bestAbs && dz < SPACING * 0.4) {
-        bestAbs = Math.abs(dz);
-        bestIdx = i;
-      }
+      if (Math.abs(dz) < bestAbs && dz < SPACING * 0.4) { bestAbs = Math.abs(dz); bestIdx = i; }
     });
 
-    if (bestIdx !== this.focused) {
-      this.focused = bestIdx;
-      this.onFocus(bestIdx);
-    }
+    if (bestIdx !== this.focused) { this.focused = bestIdx; this.onFocus(bestIdx); }
 
-    // hover detection
     let hover = -1;
     if (this.pointer.x > -1.5) {
       this.raycaster.setFromCamera(this.pointer, this.camera);
       const hits = this.raycaster.intersectObjects(
-        this.solids.filter((s) => s.parent.visible && s.material.opacity > 0.5)
+        this.cards.filter((c) => c.visible && c.material.opacity > 0.5)
       );
       if (hits.length) hover = hits[0].object.userData.index;
     }
