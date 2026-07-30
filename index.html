@@ -91,17 +91,28 @@
     <div class="nav__right">
       <nav class="nav__links">
         <a href="#work" data-cursor>Work</a>
-        <a href="#writing" data-cursor>Writing</a>
         <a href="#about" data-cursor>About</a>
         <a href="#contact" data-cursor>Contact</a>
-        <a href="resume.html" class="nav__resume" target="_blank" data-cursor>Résumé</a>
       </nav>
+      <a href="resume.html" class="nav__resume" target="_blank" data-cursor>Résumé</a>
       <button class="nav__sound" id="soundToggle" aria-pressed="false" aria-label="Toggle ambient sound" data-cursor>
         <span class="nav__sound-bars"><i></i><i></i><i></i><i></i></span>
         <span class="nav__sound-label">Sound</span>
       </button>
     </div>
   </header>
+
+  <!-- current section label (fades in per section) -->
+  <div class="section-label" id="sectionLabel" aria-hidden="true">
+    <span class="section-label__num" id="sectionNum">00</span>
+    <span class="section-label__name" id="sectionName"></span>
+  </div>
+
+  <!-- persistent "keep scrolling" cue -->
+  <div class="scroll-cue" id="scrollCue" aria-hidden="true">
+    <span>Scroll</span>
+    <i></i>
+  </div>
 
   <main data-scroll-container>
 
@@ -110,10 +121,11 @@
       <div class="hero__inner">
         <div class="hero__eyebrow reveal"><span data-eyebrow>PORTFOLIO — 2026</span></div>
         <h1 class="hero__title">
-          <span class="line"><span data-h1a>WRITE.</span></span>
-          <span class="line"><span data-h1b>BUILD.</span></span>
-          <span class="line"><span data-h1c>SERVE.</span></span>
+          <span class="line"><span data-name>ARPEET SHAH</span></span>
         </h1>
+        <p class="hero__tagline reveal">
+          <span data-h1a>Write.</span> <span data-h1b>Build.</span> <span data-h1c>Serve.</span>
+        </p>
         <p class="hero__sub reveal" data-sub>
           I design and build immersive digital experiences at the edge of
           code, motion and 3D.
@@ -205,6 +217,8 @@
           </div>
         </div>
       </div>
+
+      <div class="life" id="lifeCards"><!-- injected --></div>
     </section>
 
     <div class="pulse-rule" aria-hidden="true">
@@ -225,7 +239,7 @@
     <section class="now" id="now">
       <div class="section-head">
         <span class="section-head__num">04</span>
-        <h2 class="section-head__title reveal-up">Now</h2>
+        <h2 class="section-head__title reveal-up">Now &amp; Next</h2>
       </div>
       <div class="now__inner">
         <p class="now__lede reveal-up" id="nowLede"></p>
@@ -278,6 +292,6 @@
     </div>
   </div>
 
-  <script type="module" src="js/main.js?b=30"></script>
+  <script type="module" src="js/main.js?b=32"></script>
 </body>
 </html>

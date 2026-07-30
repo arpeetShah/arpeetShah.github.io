@@ -15,9 +15,9 @@ gsap.registerPlugin(ScrollTrigger);
 const CONTENT = {
   name: "Arpeet Shah",
   navMark: "ARPEET SHAH",
-  role1: "WRITE.",
-  role2: "BUILD.",
-  role3: "SERVE.",
+  role1: "Write.",
+  role2: "Build.",
+  role3: "Serve.",
   eyebrow: "WRITER · FOUNDER · ATHLETE — MCKINNEY, TX",
   heroSub:
     "I write The Pulse, co-founded a marketing agency, compete in cricket and tennis, and build the things that carry it all.",
@@ -34,13 +34,13 @@ const CONTENT = {
 
   // "Now" — what you're focused on this season. Update the date + items freely.
   now: {
-    lede: "What I'm focused on right now.",
+    lede: "What I'm focused on right now — and where it's headed.",
     updated: "Updated July 2026",
     items: [
       "Keeping The Pulse's every-Sunday streak alive and growing readership.",
       "Landing Orvexa's first clients and sharpening our content playbook.",
       "Training for tennis season and staying sharp in cricket.",
-      "Saturdays at the mandir — and building toward the pre-med path.",
+      "The long game: studying medicine — hopefully at Johns Hopkins — to do work that helps the community I'm in.",
     ],
   },
 
@@ -104,30 +104,6 @@ const CONTENT = {
       ],
     },
     {
-      title: "Writing",
-      kicker: "How I Think",
-      color: "#b98bff",
-      model: "torus",
-      link: { label: "Read the articles", url: "https://arpeetshah.github.io/the-pulse/articles.html" },
-      blurb: "Research-backed writing, peer to peer — never talking down to the reader.",
-      lede: "Every article starts with a question I couldn't answer.",
-      body: [
-        "Something I've noticed, a tension I keep running into, something that doesn't add up. Then I actually go research it. I read studies. I check sources. I look for the thing that's true, not just the thing that sounds good.",
-        "Then I write it peer to peer — not like a textbook, not like a news wire. Short paragraphs. Plain language. No jargon unless I explain it. Every claim that matters has a source at the bottom of the page.",
-        "It's the part of my life that's taught me the most: you understand something only once you can explain it simply.",
-      ],
-      stats: [
-        { k: "Beats", v: "5 categories" },
-        { k: "Approach", v: "Cited & researched" },
-        { k: "Voice", v: "Peer to peer" },
-      ],
-      media: [
-        { caption: '"Grades vs. Having Fun"' },
-        { caption: '"Your Brain After 10 PM"' },
-        { caption: "Research notes & sources" },
-      ],
-    },
-    {
       title: "Code & Craft",
       kicker: "What I'm Building",
       color: "#ff7ac6",
@@ -150,124 +126,36 @@ const CONTENT = {
         { src: "images/code-1.png", caption: "A project screenshot" },
       ],
     },
+  ],
+
+  // "Life" — the human side, shown as calm cards inside About.
+  life: [
     {
       title: "Two Sports",
-      kicker: "Where I Compete",
-      color: "#7ce7a8",
-      model: "octahedron",
-      blurb: "Cricket for seven years at the national level, tennis for three at Emerson High.",
-      lede: "Two sports that demand two completely different kinds of nerve.",
-      body: [
-        "I've played <strong>cricket for seven years</strong>, including at national tournaments, and I've been on the <strong>Emerson High School tennis team</strong> for three.",
-        "Cricket taught me the long game — matches that stretch for hours where staying focused <em>is</em> the skill. Tennis taught me the opposite lesson: you're alone out there, nobody is coming to fix the next point for you. I've been named <strong>MVP at multiple cricket tournaments</strong> and won several tennis tournaments.",
-        "Competing is also why I write about athletic performance and recruiting for The Pulse. It's my own life, not just a beat I cover.",
-      ],
+      kicker: "Where I compete",
+      body: "Cricket for seven years at the national level — multiple tournament MVPs — and three years on the Emerson High School tennis team, with several titles. One taught me the long game; the other taught me that when it's tight, nobody's coming to fix the next point but me.",
       stats: [
-        { k: "Cricket", v: "7 years · national level" },
-        { k: "Tennis", v: "Emerson HS · 3 years" },
-        { k: "Honors", v: "Multiple cricket MVPs" },
-        { k: "Tennis titles", v: "Multiple tournament wins" },
-      ],
-      media: [
-        { src: "images/sport-game.jpg", caption: "Match day" },
-        { src: "images/sport-team.jpg", caption: "The team" },
+        { k: "Cricket", v: "7 yrs · national · MVPs" },
+        { k: "Tennis", v: "Emerson HS · 3 yrs · titles" },
       ],
     },
     {
-      title: "Tutoring",
-      kicker: "Passing It On",
-      color: "#ff9f7a",
-      model: "torus",
-      blurb: "Free tutoring for younger kids who need the help. Not a business — just the right thing.",
-      lede: "I tutor younger kids for free. That's the whole model.",
-      body: [
-        "Any younger student who needs help can get it from me, and it doesn't cost them anything. I'm not doing it to make money or add a line to a résumé — <strong>I'm doing it for them</strong>.",
-        "It turns out teaching something is the fastest way to find out whether you actually understand it. It's made me a better writer, too: if I can't explain something simply to a kid, I don't know it well enough to publish it.",
-      ],
+      title: "Service & Faith",
+      kicker: "What I show up for",
+      body: "I tutor younger students for free — not for pay, just because they need it. And every Saturday I spend about seven hours doing seva at BAPS Shri Swaminarayan Mandir. It's the foundation of my values, and it keeps everything else in proportion.",
       stats: [
-        { k: "What", v: "1-on-1 tutoring" },
-        { k: "Who", v: "Younger students" },
-        { k: "Cost", v: "Free, always" },
+        { k: "Tutoring", v: "Free, 1-on-1" },
+        { k: "Seva", v: "~7 hrs every Saturday" },
       ],
-      media: [{ src: "images/tutoring.jpg", caption: "Tutoring" }],
     },
     {
-      title: "Seva",
-      kicker: "What I Show Up For",
-      color: "#b98bff",
-      model: "icosahedron",
-      blurb: "Seven hours every Saturday at BAPS Shri Swaminarayan Mandir — where my values come from.",
-      lede: "Every Saturday. Seven hours. No exceptions.",
-      body: [
-        "I volunteer at <strong>BAPS Shri Swaminarayan Mandir</strong> every Saturday, usually around seven hours. It's my faith and the foundation of my life — nearly every value I have traces back to there.",
-        "It's the part of my week that keeps everything else in proportion. Whatever is happening with school, tennis, The Pulse or Orvexa, Saturday resets it.",
-        "It also taught me the thing I try to carry everywhere else: <strong>showing up consistently matters more than showing up impressively.</strong>",
-      ],
-      stats: [
-        { k: "Where", v: "BAPS Shri Swaminarayan Mandir" },
-        { k: "When", v: "Every Saturday" },
-        { k: "Hours", v: "~7 per week" },
-      ],
-      media: [{ src: "images/service.jpg", caption: "Seva at the mandir" }],
-    },
-    {
-      title: "Family",
-      kicker: "What Shaped Me",
-      color: "#ffd76e",
-      model: "dodecahedron",
-      blurb: "My mom, my dad, and my older brother — the people behind everything else on this site.",
-      lede: "Everything here traces back to three people.",
-      body: [
-        "My mom and dad live with me here in McKinney, and both have built stable careers. My older brother is up in <strong>Minnesota</strong> — working, settled, and the one who went first.",
-        "We spend a lot of time together, and that's deliberate. Family isn't the thing I fit around everything else; it's the thing everything else fits around.",
-      ],
-      stats: [
-        { k: "Family", v: "Mom, Dad, Brother" },
-        { k: "Brother", v: "Minnesota" },
-      ],
-      media: [{ src: "images/roots.jpg", caption: "Family" }],
-    },
-    {
-      title: "McKinney",
-      kicker: "Where I'm From",
-      color: "#ffb26e",
-      model: "sphere",
-      link: {
-        label: "Read my McKinney story",
-        url: "https://arpeetshah.github.io/the-pulse/articles/mckinney-startup-scene.html",
-      },
-      blurb: "A Texas suburb with a lot more going on than most people realize.",
-      lede: "Home base — and a beat I actually cover.",
-      body: [
-        "McKinney, Texas. I write a Local Spotlights column about it: teen founders, small business owners, and the people quietly rewriting what a Texas suburb looks like.",
-        "Reporting on my own town taught me there's a story on basically every street if you bother to ask.",
-        "It's home base for all of it — school at <strong>Emerson High</strong>, tennis, the mandir on Saturdays, and my family. Everything on this site happens within about fifteen minutes of here.",
-      ],
+      title: "Home & Family",
+      kicker: "Where I'm from",
+      body: "McKinney, Texas — my mom, my dad, and my older brother up in Minnesota who went first. Home base for all of it, and a place I care enough about to cover in The Pulse's Local Spotlights. Family isn't the thing I fit around everything else; it's the thing everything else fits around.",
       stats: [
         { k: "Based in", v: "McKinney, TX" },
-        { k: "School", v: "Emerson High School" },
-        { k: "Column", v: "Local Spotlights" },
+        { k: "Family", v: "Mom · Dad · Brother" },
       ],
-      media: [{ src: "images/mckinney.jpg", caption: "Downtown McKinney" }],
-    },
-    {
-      title: "What's Next",
-      kicker: "Where I'm Going",
-      color: "#6ee7ff",
-      model: "torusKnot",
-      blurb: "Medicine — hopefully Johns Hopkins — plus tennis, and time with the people who matter.",
-      lede: "I want to be a doctor.",
-      body: [
-        "The goal is <strong>medicine</strong>, and <strong>Johns Hopkins</strong> is the target. The reason is the same one behind The Pulse and the free tutoring: I want the work I do to actually help the community I'm standing in.",
-        "Alongside that — keep getting seriously good at tennis, keep growing The Pulse and Orvexa, and keep spending real time with my family. Not everything has to be a career move.",
-        "If you're building something interesting, I'd like to hear about it.",
-      ],
-      stats: [
-        { k: "Goal", v: "Medicine" },
-        { k: "Dream school", v: "Johns Hopkins" },
-        { k: "Also", v: "Tennis · The Pulse · Orvexa" },
-      ],
-      media: [{ src: "images/portrait.jpg", caption: "Portrait" }],
     },
   ],
 
@@ -331,6 +219,7 @@ function hydrate() {
 
   set("#navName", CONTENT.navMark);
   set("#footName", CONTENT.name);
+  set("[data-name]", CONTENT.name);
   set("[data-eyebrow]", CONTENT.eyebrow);
   set("[data-h1a]", CONTENT.role1);
   set("[data-h1b]", CONTENT.role2);
@@ -353,6 +242,23 @@ function hydrate() {
     $("nowLede").textContent = CONTENT.now.lede;
     $("nowUpdated").textContent = CONTENT.now.updated;
     $("nowList").innerHTML = CONTENT.now.items.map((x) => `<li>${x}</li>`).join("");
+  }
+
+  // Life cards (About)
+  if (CONTENT.life) {
+    $("lifeCards").innerHTML = CONTENT.life
+      .map(
+        (c) => `
+        <div class="life__card reveal-up">
+          <span class="life__kicker">${c.kicker}</span>
+          <h3 class="life__title">${c.title}</h3>
+          <p class="life__body">${c.body}</p>
+          <dl class="life__stats">${(c.stats || [])
+            .map((s) => `<div><dt>${s.k}</dt><dd>${s.v}</dd></div>`)
+            .join("")}</dl>
+        </div>`
+      )
+      .join("");
   }
 
   $("writing-list").innerHTML = CONTENT.writing
@@ -639,22 +545,44 @@ function initScroll(scene, chapters) {
   const webgl = $("webgl");
   const vignette = document.querySelector(".vignette");
   const heart = $("heart");
+  const scrollCue = $("scrollCue");
   const root = document.documentElement;
 
-  // heart flows down the page, easing toward the scroll position
-  let heartY = window.innerHeight * 0.08;
-  let heartTarget = heartY;
+  // heart flows across + down the page, easing toward its scroll targets
+  let heartX = window.innerWidth * 0.14, heartTargetX = heartX;
+  let heartY = window.innerHeight * 0.2, heartTargetY = heartY;
   const heartLoop = () => {
-    heartY += (heartTarget - heartY) * 0.08;
-    if (heart) heart.style.top = heartY.toFixed(1) + "px";
+    heartX += (heartTargetX - heartX) * 0.06;
+    heartY += (heartTargetY - heartY) * 0.06;
+    if (heart) {
+      heart.style.left = heartX.toFixed(1) + "px";
+      heart.style.top = heartY.toFixed(1) + "px";
+    }
     requestAnimationFrame(heartLoop);
   };
   heartLoop();
 
   const hex = (h) => [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
   const INK_DARK = hex("05060a"), INK_LIGHT = hex("eef0f4");
+  const lerpN = (a, b, t) => a + (b - a) * t;
   const mixInk = (t) =>
     `rgb(${INK_DARK.map((c, i) => Math.round(c + (INK_LIGHT[i] - c) * t)).join(",")})`;
+
+  // dark jewel tones the background washes through as you scroll deeper
+  const DARK_STOPS = [
+    [10, 12, 28],   // deep indigo
+    [22, 10, 30],   // deep violet
+    [28, 10, 22],   // deep plum
+    [8, 20, 26],    // deep teal
+    [14, 12, 30],   // back toward indigo
+  ];
+  const paletteColor = (p) => {
+    const n = DARK_STOPS.length - 1;
+    const x = Math.min(Math.max(p, 0), 1) * n;
+    const i = Math.min(Math.floor(x), n - 1);
+    const f = x - i;
+    return DARK_STOPS[i].map((c, k) => lerpN(c, DARK_STOPS[i + 1][k], f));
+  };
 
   const onScroll = () => {
     const scroll = Number.isFinite(lenis.scroll) ? lenis.scroll : window.scrollY || 0;
@@ -667,13 +595,20 @@ function initScroll(scene, chapters) {
     const vh = window.innerHeight;
     const denom = vh * 0.85;
     const fade = denom > 0 ? Math.min(Math.max(scroll / denom, 0), 1) : 0;
-    bgFade.style.backgroundPositionY = fade * 100 + "%";
+    // background washes: white at the top -> evolving dark jewel tones
+    const dark = paletteColor(t);
+    const bg = dark.map((c) => Math.round(lerpN(255, c, fade)));
+    bgFade.style.background = `rgb(${bg[0]},${bg[1]},${bg[2]})`;
     webgl.style.opacity = fade;
     vignette.style.opacity = fade;
     root.style.setProperty("--ink", mixInk(Math.min(fade * 1.35, 1)));
 
-    // heart flows down the viewport with total scroll progress
-    heartTarget = (0.08 + t * 0.84) * window.innerHeight;
+    // heart flows across + down the page as you scroll
+    heartTargetY = (0.22 + t * 0.62) * vh;
+    heartTargetX = (0.1 + 0.78 * (0.5 - 0.5 * Math.cos(t * Math.PI * 3))) * window.innerWidth;
+
+    // keep-scrolling cue stays until you're near the very bottom
+    scrollCue.classList.toggle("show", t < 0.92);
 
     if (chapters) {
       const rect = workSection.getBoundingClientRect();
@@ -687,10 +622,41 @@ function initScroll(scene, chapters) {
   requestAnimationFrame(onScroll);
   setTimeout(onScroll, 400);
 
+  // per-section label that fades in as each section crosses the middle
+  const sectionLabel = $("sectionLabel"), sectionNum = $("sectionNum"), sectionName = $("sectionName");
+  const SECTIONS = [
+    { id: "work", num: "01", name: "Work" },
+    { id: "writing", num: "02", name: "Writing" },
+    { id: "about", num: "03", name: "About" },
+    { id: "now", num: "04", name: "Now & Next" },
+    { id: "contact", num: "05", name: "Contact" },
+  ];
+  const secObs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const s = SECTIONS.find((x) => x.id === e.target.id);
+        if (s) {
+          sectionNum.textContent = s.num;
+          sectionName.textContent = s.name;
+          sectionLabel.classList.add("show");
+        } else {
+          sectionLabel.classList.remove("show"); // hero / intro
+        }
+      });
+    },
+    { rootMargin: "-45% 0px -45% 0px" }
+  );
+  ["hero", "intro", ...SECTIONS.map((s) => s.id)].forEach((id) => {
+    const el = $(id);
+    if (el) secObs.observe(el);
+  });
+
   const introTl = gsap.timeline({ defaults: { ease: "expo.out" } });
   introTl
     .from(".hero__eyebrow", { yPercent: 120, opacity: 0, duration: 1 })
     .from(".hero__title .line span", { yPercent: 120, duration: 1.2, stagger: 0.12 }, "-=0.7")
+    .from(".hero__tagline", { y: 24, opacity: 0, duration: 1 }, "-=0.8")
     .from(".hero__sub", { y: 30, opacity: 0, duration: 1 }, "-=0.7")
     .from(".hero__scroll", { opacity: 0, duration: 1 }, "-=0.6")
     .from(".nav", { opacity: 0, y: -20, duration: 1 }, "-=0.9");
