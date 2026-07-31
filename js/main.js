@@ -77,8 +77,7 @@ const CONTENT = {
       ],
       media: [
         { src: "images/pulse-home.png", caption: "The Pulse homepage" },
-        { src: "images/pulse-article.png", caption: "An article layout" },
-        { src: "images/pulse-social.png", caption: "Instagram / TikTok" },
+        { src: "images/pulse-social.png", caption: "@read_thepulse" },
       ],
     },
     {
@@ -101,8 +100,9 @@ const CONTENT = {
         { k: "Stage", v: "Building client base" },
       ],
       media: [
-        { src: "images/orvexa-1.png", caption: "Orvexa — brand / site" },
-        { src: "images/orvexa-2.png", caption: "Product or dashboard" },
+        { src: "images/orvexa-1.png", caption: "Orvexa Media Strategies" },
+        { src: "images/orvexa-2.png", caption: "Launch announcement" },
+        { src: "images/orvexa-logo.png", caption: "Brand mark" },
       ],
     },
     {
@@ -110,7 +110,7 @@ const CONTENT = {
       kicker: "What I'm Building",
       color: "#ff7ac6",
       model: "icosahedron",
-      image: "images/portfolio-hero.png",
+      image: "images/code-1.png",
       link: { label: "See the code on GitHub", url: "https://github.com/arpeetShah" },
       blurb: "When the tool I need doesn't exist, I build it — sites, shaders, experiments.",
       lede: "I build the things that carry the writing.",
@@ -125,8 +125,9 @@ const CONTENT = {
         { k: "Built", v: "2 sites & counting" },
       ],
       media: [
-        { src: "images/portfolio-hero.png", caption: "This portfolio — WebGL galaxy" },
-        { src: "images/code-1.png", caption: "A project screenshot" },
+        { src: "images/portfolio-hero.png", caption: "This portfolio" },
+        { src: "images/code-1.png", caption: "Projects on GitHub" },
+        { src: "images/portfolio-contact.png", caption: "Particle-field contact" },
       ],
     },
   ],
@@ -179,19 +180,9 @@ const CONTENT = {
       category: "Mental Health", cat: "mental", date: "May 18, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/grades-and-fun.html",
     },
     {
-      title: "How to Start Making Real Money Before You Graduate",
-      excerpt: "You don't need a work permit or a boss. Here's what actually works for high schoolers who want to earn on their own terms.",
-      category: "Money", cat: "money", date: "May 11, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/making-money-in-high-school.html",
-    },
-    {
       title: "Why Your Brain Actually Works Differently After 10 PM",
       excerpt: "There's a reason late-night studying feels different. The science of your teen brain explains everything — including why you can't fall asleep.",
       category: "Science", cat: "science", date: "May 4, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/brain-at-night.html",
-    },
-    {
-      title: "McKinney Has a Startup Scene and Most Locals Have No Idea",
-      excerpt: "From teen founders to small business owners rewriting what a Texas suburb looks like — here's what's quietly building in our backyard.",
-      category: "Local", cat: "local", date: "Apr 20, 2025", url: "https://arpeetshah.github.io/the-pulse/articles/mckinney-startup-scene.html",
     },
   ],
 
