@@ -238,23 +238,26 @@ export default class Chapters {
 
     this.cards.forEach((mesh, i) => {
       const worldZ = mesh.position.z + this.group.position.z;
-      const dz = worldZ + FOCUS_DIST;
-      const k = THREE.MathUtils.clamp(-dz / (SPACING * 2.1), 0, 1);
+      const dz = worldZ + FOCUS_DIST; // 0 at focus, <0 further back, >0 past the camera
 
-      mesh.position.x = k * 4.4 + this.mouse.x * 0.3 * (1 - k);
-      mesh.position.y = -k * 2.7 + Math.sin(t * 0.5 + mesh.userData.sway) * 0.07 + this.mouse.y * 0.2 * (1 - k);
-      mesh.scale.setScalar(1.32 - k * 0.5);
+      // centred stack — only subtle float + cursor parallax, no corner sweep
+      const near = THREE.MathUtils.clamp(1 - Math.abs(dz) / (SPACING * 1.4), 0, 1);
+      mesh.position.x = this.mouse.x * 0.22 * near;
+      mesh.position.y = Math.sin(t * 0.4 + mesh.userData.sway) * 0.04 + this.mouse.y * 0.13 * near;
+      mesh.rotation.y = this.mouse.x * 0.1 * near;
+      mesh.rotation.x = 0.015 + this.mouse.y * -0.06 * near;
 
-      // gentle 3/4 tilt + cursor parallax
-      mesh.rotation.y = -0.12 - k * 0.35 + this.mouse.x * 0.18 * (1 - k);
-      mesh.rotation.x = 0.03 + this.mouse.y * -0.12 * (1 - k);
-
-      let op;
-      if (dz > 0) op = 1 - dz / (SPACING * 0.7);
-      else op = 1 - THREE.MathUtils.smoothstep(-dz, SPACING * 2.2, SPACING * 3.4);
-      mesh.material.opacity = THREE.MathUtils.clamp(op, 0, 1);
+      if (dz > 0) {
+        // flying past the camera: grow + fade out, revealing the next
+        mesh.scale.setScalar(1.4 + dz * 0.22);
+        mesh.material.opacity = Math.max(0, 1 - dz / (SPACING * 0.5));
+      } else {
+        const kk = Math.min(-dz / (SPACING * 1.8), 1); // 0 at focus -> 1 far back
+        mesh.scale.setScalar(1.4 - kk * 0.22);
+        mesh.material.opacity = 1; // opaque; hidden behind the focused one
+      }
       mesh.visible = mesh.material.opacity > 0.02;
-      mesh.renderOrder = -Math.round(worldZ * 100);
+      mesh.renderOrder = Math.round(worldZ * 100); // nearer draws on top -> clean occlusion
 
       if (Math.abs(dz) < bestAbs && dz < SPACING * 0.4) { bestAbs = Math.abs(dz); bestIdx = i; }
     });
