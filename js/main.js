@@ -1,5 +1,5 @@
 import Scene from "./scene.js";
-import Chapters from "./chapters.js?b=36";
+import Chapters from "./chapters.js?b=37";
 import ModelViewer from "./modelviewer.js";
 import Ambience from "./audio.js";
 import Fireworks from "./fireworks.js";

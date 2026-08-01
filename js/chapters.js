@@ -12,7 +12,8 @@ import * as THREE from "three";
 const SPACING = 6;
 const FOCUS_DIST = 5.0;
 const PW = 3.7, PH = 2.31;         // panel size (16:10)
-const TW = 1024, TH = 640;         // texture size
+const TW = 1024, TH = 640;         // logical drawing size
+const SCALE = 2.2;                  // supersample factor -> crisp textures
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
@@ -41,6 +42,8 @@ function coverDraw(ctx, img, x, y, w, h) {
 
 function drawPanel(canvas, ch, img) {
   const ctx = canvas.getContext("2d");
+  ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0); // draw in logical coords, render at SCALE res
+  ctx.imageSmoothingQuality = "high";
   const color = ch.color || "#6ee7ff";
   const pad = 16, r = 34, barH = 62;
   ctx.clearRect(0, 0, TW, TH);
@@ -149,6 +152,7 @@ export default class Chapters {
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true });
     this.renderer.setClearColor(0x000000, 0);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this._maxAniso = this.renderer.capabilities.getMaxAnisotropy();
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 300);
@@ -163,11 +167,13 @@ export default class Chapters {
     const geo = new THREE.PlaneGeometry(PW, PH, 1, 1);
     this.chapters.forEach((ch, i) => {
       const canvas = document.createElement("canvas");
-      canvas.width = TW; canvas.height = TH;
+      canvas.width = TW * SCALE; canvas.height = TH * SCALE;
       drawPanel(canvas, ch, null);
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
-      tex.anisotropy = 4;
+      tex.anisotropy = this._maxAniso;
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.generateMipmaps = true;
 
       // upgrade to a real screenshot if one is provided
       if (ch.image) {
