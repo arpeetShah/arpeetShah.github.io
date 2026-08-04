@@ -154,6 +154,7 @@
     <section class="chapters" id="work">
       <div class="chapters__sticky">
         <canvas class="chapters__gl" id="chapters-gl"></canvas>
+        <div class="chapters__scrim" aria-hidden="true"></div>
         <div class="chapters__ui">
           <div class="chapters__head">
             <span class="section-head__num">01</span>
@@ -186,6 +187,7 @@
 
     <!-- THE PULSE — standalone editorial section (unique hot-pink template) -->
     <section class="pulse" id="pulse">
+      <div class="fog fog--light" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="pulse__inner">
         <span class="pulse__eyebrow reveal-up" id="pulseEyebrow"></span>
         <h2 class="pulse__masthead reveal-up">THE PULSE</h2>
@@ -200,10 +202,24 @@
       </div>
     </section>
 
+    <!-- ORVEXA — "In the Making" (subtle, contained) -->
+    <section class="making" id="orvexa">
+      <div class="making__inner">
+        <div class="making__text">
+          <span class="making__eyebrow">In the Making</span>
+          <h2 class="making__title" id="makingTitle"></h2>
+          <p class="making__blurb" id="makingBlurb"></p>
+          <dl class="making__stats" id="makingStats"></dl>
+          <a class="making__cta" id="makingCta" target="_blank" rel="noopener" data-cursor></a>
+        </div>
+        <a class="making__media" id="makingMedia" target="_blank" rel="noopener" data-cursor aria-label="Visit Orvexa"></a>
+      </div>
+    </section>
+
     <!-- ABOUT -->
     <section class="about" id="about">
       <div class="section-head">
-        <span class="section-head__num">03</span>
+        <span class="section-head__num">04</span>
         <h2 class="section-head__title reveal-up">About</h2>
       </div>
       <div class="about__grid">
@@ -240,10 +256,21 @@
       </svg>
     </div>
 
+    <!-- TUTORING — its own softly-lit section -->
+    <section class="tutor" id="tutor">
+      <div class="fog" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="tutor__inner">
+        <span class="tutor__eyebrow reveal-up">Teaching — for a cause</span>
+        <h2 class="tutor__title reveal-up" id="tutorTitle"></h2>
+        <div class="tutor__body" id="tutorBody"></div>
+        <dl class="tutor__stats" id="tutorStats"></dl>
+      </div>
+    </section>
+
     <!-- NOW -->
     <section class="now" id="now">
       <div class="section-head">
-        <span class="section-head__num">04</span>
+        <span class="section-head__num">06</span>
         <h2 class="section-head__title reveal-up">Now &amp; Next</h2>
       </div>
       <div class="now__inner">
@@ -297,6 +324,6 @@
     </div>
   </div>
 
-  <script type="module" src="js/main.js?b=38"></script>
+  <script type="module" src="js/main.js?b=39"></script>
 </body>
 </html>

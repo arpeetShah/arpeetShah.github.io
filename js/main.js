@@ -1,5 +1,5 @@
 import Scene from "./scene.js";
-import Chapters from "./chapters.js?b=38";
+import Chapters from "./chapters.js?b=39";
 import ModelViewer from "./modelviewer.js";
 import Ambience from "./audio.js";
 import Fireworks from "./fireworks.js";
@@ -61,6 +61,8 @@ const CONTENT = {
       kicker: "Neuroscience Research",
       color: "#ff5c72",
       model: "icosahedron",
+      aspect: 1.6,
+      sizeMul: 1.06,
       image: "images/neuro-eeg.png",
       domain: "research · eeg-seizure-detection",
       blurb: "Teaching a computer to catch an epileptic seizure from raw brainwaves — my independent research for the AAN Neuroscience Research Prize.",
@@ -86,36 +88,14 @@ const CONTENT = {
       ],
     },
     {
-      title: "Orvexa",
-      kicker: "The Business",
-      color: "#ffb26e",
-      model: "box",
-      image: "images/orvexa-1.png",
-      link: { label: "Visit Orvexa", url: "https://arpeetshah.github.io/orvexa/" },
-      blurb: "A social media marketing agency I co-founded to get small local businesses seen.",
-      lede: "Great local businesses lose to whoever posts better. We're trying to fix that.",
-      body: [
-        "Orvexa is a social media marketing agency I co-founded. We work with <strong>small local businesses</strong> — the ones with a real product and almost no marketing presence — and build them a presence that actually reflects how good they are.",
-        "I'm co-founder and <strong>lead of content creation</strong>. I plan what goes out, make it, and shape the voice each business uses online. It's the same instinct behind The Pulse: figure out what people actually want to see, then go make it.",
-        "We've built the model and are bringing on our first clients now. It's the part of my life where I'm learning the most the fastest — pitching, listening to owners, and finding out what a business really needs versus what it thinks it needs.",
-      ],
-      stats: [
-        { k: "Role", v: "Co-founder · Content Lead" },
-        { k: "Clients", v: "Small local business" },
-        { k: "Stage", v: "Building client base" },
-      ],
-      media: [
-        { src: "images/orvexa-1.png", caption: "Orvexa Media Strategies" },
-        { src: "images/orvexa-2.png", caption: "Launch announcement" },
-        { src: "images/orvexa-logo.png", caption: "Brand mark" },
-      ],
-    },
-    {
       title: "Code & Craft",
       kicker: "What I'm Building",
       color: "#ff7ac6",
       model: "icosahedron",
-      image: "images/code-1.png",
+      aspect: 1.6,
+      sizeMul: 0.94,
+      image: "images/portfolio-hero.png",
+      domain: "arpeetshah.github.io",
       link: { label: "See the code on GitHub", url: "https://github.com/arpeetShah" },
       blurb: "When the tool I need doesn't exist, I build it — sites, shaders, experiments.",
       lede: "I build the things that carry the writing.",
@@ -135,6 +115,30 @@ const CONTENT = {
         { src: "images/portfolio-contact.png", caption: "Particle-field contact" },
       ],
     },
+    {
+      title: "Capabilities",
+      kicker: "Skills & Tools",
+      color: "#7ce7ff",
+      model: "octahedron",
+      aspect: 1,
+      variant: "photo",
+      sizeMul: 1.0,
+      image: "images/me.jpg",
+      blurb: "The tools and disciplines I actually work in — research, code, writing, and the craft of explaining hard things simply.",
+      lede: "A researcher's toolkit, a writer's instinct, and a builder's hands.",
+      body: [
+        "I move between disciplines on purpose. On the research side I work in <strong>Python</strong> with libraries like <strong>MNE</strong> for EEG signal processing, plus NumPy and scikit-learn for the analysis and modeling.",
+        "On the build side I write <strong>JavaScript, HTML and CSS</strong>, and I've gone deep enough into <strong>Three.js and WebGL / GLSL shaders</strong> to build things like this site from scratch. I design in Figma and keep everything organized in Notion.",
+        "But the real skill under all of them is the same one: <strong>taking something genuinely complex and making it clear</strong> — whether that's a seizure-detection pipeline, a Pulse article, or a small business's brand.",
+      ],
+      stats: [
+        { k: "Research", v: "Python · MNE · scikit-learn" },
+        { k: "Build", v: "JavaScript · Three.js · GLSL" },
+        { k: "Design", v: "Figma · Notion" },
+        { k: "Core", v: "Writing · research · explaining" },
+      ],
+      media: [{ src: "images/me.jpg", caption: "Somewhere up in the mountains" }],
+    },
   ],
 
   // "Life" — the human side, shown as calm cards inside About.
@@ -147,7 +151,7 @@ const CONTENT = {
         "Every Saturday, before almost anything else in my week, I'm at <strong>BAPS Shri Swaminarayan Mandir</strong>. It's the foundation the rest of this page sits on.",
         "I spend at least <strong>three hours teaching younger kids</strong> about our religion. Then I help run the main weekly program that <strong>around 1,000 people attend</strong> — setting it up from the ground, and then <strong>serving food to every single person</strong>, for no money, just to help others. When everyone has eaten, I'm one of the people <strong>washing the dishes afterward</strong>. Nobody's watching that part, which is sort of the whole point.",
         "I also <strong>lead the programming for Sabha</strong> — our weekly spiritual class, where about <strong>60 high-schoolers and college students</strong> come to learn more about our faith. Being trusted to plan and shape that hour has taught me more about real leadership than any title could.",
-        "Alongside the mandir, I tutor younger students for free — again, not for pay, just because they need the help. All of this is where my values actually come from, and it's the thing that keeps school, tennis, Orvexa, and my research in proportion. Showing up quietly, every single week, matters more than showing up impressively.",
+        "All of this is where my values actually come from, and it's the thing that keeps school, tennis, and my research in proportion. Showing up quietly, every single week, matters more than showing up impressively.",
       ],
       stats: [
         { k: "Where", v: "BAPS Shri Swaminarayan Mandir" },
@@ -155,7 +159,6 @@ const CONTENT = {
         { k: "Teach", v: "3+ hrs, younger kids" },
         { k: "Serve", v: "~1,000 people, free" },
         { k: "Lead", v: "Sabha — ~60 students" },
-        { k: "Also", v: "Free tutoring" },
       ],
     },
     {
@@ -213,6 +216,35 @@ const CONTENT = {
         excerpt: "The research on stress and balance — and why the tension you feel is real, but manageable.",
         url: "https://arpeetshah.github.io/the-pulse/articles/grades-and-fun.html",
       },
+    ],
+  },
+
+  // ORVEXA — "In the Making" (subtle section)
+  making: {
+    title: "Orvexa Media Strategies",
+    blurb:
+      "A social-media marketing agency I co-founded to get small local businesses the presence their work deserves. I'm co-founder and lead of content creation — planning what goes out, making it, and shaping the voice behind each account. We've built the model and are bringing on our first clients now.",
+    stats: [
+      { k: "Role", v: "Co-founder · Content Lead" },
+      { k: "For", v: "Small local businesses" },
+      { k: "Stage", v: "Building the client base" },
+    ],
+    cta: { label: "Visit Orvexa", url: "https://arpeetshah.github.io/orvexa/" },
+    image: "images/orvexa-2.png",
+  },
+
+  // TUTORING — its own section
+  tutor: {
+    title: "Every lesson funds a cause.",
+    body: [
+      "I tutor younger kids across <strong>every level of math up through pre-calculus</strong>, plus <strong>biology</strong> and <strong>Spanish</strong> — meeting them wherever they are and making the parts that feel impossible feel doable.",
+      "But here's what matters most: <strong>I don't keep the money.</strong> Every dollar I earn tutoring goes straight to a cause that helps the community. The teaching is something I genuinely love — the point of it is something bigger than me.",
+      "It's the same thread that runs through everything I do: take a skill I have, and turn it into something genuinely useful for someone else.",
+    ],
+    stats: [
+      { k: "Subjects", v: "Math (→ pre-calc) · Biology · Spanish" },
+      { k: "Who", v: "Younger students" },
+      { k: "Proceeds", v: "100% to a community cause" },
     ],
   },
 
@@ -333,6 +365,28 @@ function hydrate() {
     const cta = $("pulseCta");
     cta.href = p.cta.url;
     cta.innerHTML = `${p.cta.label} <i>↗</i>`;
+  }
+
+  // Orvexa — "In the Making"
+  if (CONTENT.making) {
+    const m = CONTENT.making;
+    $("makingTitle").textContent = m.title;
+    $("makingBlurb").textContent = m.blurb;
+    $("makingStats").innerHTML = m.stats.map((s) => `<div><dt>${s.k}</dt><dd>${s.v}</dd></div>`).join("");
+    const mc = $("makingCta");
+    mc.href = m.cta.url;
+    mc.innerHTML = `${m.cta.label} <i>↗</i>`;
+    const mm = $("makingMedia");
+    mm.href = m.cta.url;
+    mm.innerHTML = `<img src="${m.image}" alt="${m.title}" loading="lazy" />`;
+  }
+
+  // Tutoring
+  if (CONTENT.tutor) {
+    const tu = CONTENT.tutor;
+    $("tutorTitle").textContent = tu.title;
+    $("tutorBody").innerHTML = tu.body.map((x) => `<p class="reveal-up">${x}</p>`).join("");
+    $("tutorStats").innerHTML = tu.stats.map((s) => `<div><dt>${s.k}</dt><dd>${s.v}</dd></div>`).join("");
   }
 
   // only render links that actually go somewhere
@@ -684,9 +738,11 @@ function initScroll(scene, chapters) {
   const SECTIONS = [
     { id: "work", num: "01", name: "Work" },
     { id: "pulse", num: "02", name: "The Pulse" },
-    { id: "about", num: "03", name: "About" },
-    { id: "now", num: "04", name: "Now & Next" },
-    { id: "contact", num: "05", name: "Contact" },
+    { id: "orvexa", num: "03", name: "Orvexa" },
+    { id: "about", num: "04", name: "About" },
+    { id: "tutor", num: "05", name: "Tutoring" },
+    { id: "now", num: "06", name: "Now & Next" },
+    { id: "contact", num: "07", name: "Contact" },
   ];
   const secObs = new IntersectionObserver(
     (entries) => {

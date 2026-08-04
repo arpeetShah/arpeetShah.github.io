@@ -1,19 +1,18 @@
 import * as THREE from "three";
 
 /* ============================================================
-   3D work flythrough.
-   Each project is a floating "browser panel" that flies toward
-   the camera as you scroll — rises from the lower-right, grows
-   and centres at the focus plane, then passes by. Each panel
-   shows a real screenshot if one is provided, otherwise a clean
-   auto-generated mockup. Click the focused one to open it.
+   3D work flythrough — floating project panels.
+   Each project flies toward the camera one at a time (centred
+   depth stack; the focused one fills the frame, the rest hide
+   behind it). Panels can be browser-window mockups OR full-bleed
+   photo cards, with per-card aspect ratio and size.
    ============================================================ */
 
 const SPACING = 6;
 const FOCUS_DIST = 5.0;
-const PW = 3.7, PH = 2.31;         // panel size (16:10)
-const TW = 1024, TH = 640;         // logical drawing size
-const SCALE = 2.2;                  // supersample factor -> crisp textures
+const BASE_H = 2.31;   // world height (all cards share height; width varies by aspect)
+const BASE_TH = 660;   // logical texture height
+const SCALE = 2.2;     // supersample -> crisp textures
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
@@ -42,45 +41,69 @@ function coverDraw(ctx, img, x, y, w, h) {
 
 function drawPanel(canvas, ch, img) {
   const ctx = canvas.getContext("2d");
-  ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0); // draw in logical coords, render at SCALE res
+  ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0);
   ctx.imageSmoothingQuality = "high";
+  const LW = canvas.width / SCALE, LH = canvas.height / SCALE;
   const color = ch.color || "#6ee7ff";
-  const pad = 16, r = 34, barH = 62;
-  ctx.clearRect(0, 0, TW, TH);
+  const pad = 16, r = 34;
+  ctx.clearRect(0, 0, LW, LH);
 
-  // panel body
-  roundRect(ctx, pad, pad, TW - pad * 2, TH - pad * 2, r);
-  const g = ctx.createLinearGradient(0, pad, 0, TH - pad);
+  /* ---- full-bleed photo card (e.g. the portrait / skills card) ---- */
+  if (ch.variant === "photo") {
+    ctx.save();
+    roundRect(ctx, pad, pad, LW - pad * 2, LH - pad * 2, r);
+    ctx.clip();
+    if (img) coverDraw(ctx, img, pad, pad, LW - pad * 2, LH - pad * 2);
+    else { ctx.fillStyle = "#0c0e14"; ctx.fillRect(pad, pad, LW - pad * 2, LH - pad * 2); }
+    const grad = ctx.createLinearGradient(0, LH * 0.45, 0, LH);
+    grad.addColorStop(0, "rgba(6,7,11,0)");
+    grad.addColorStop(1, "rgba(6,7,11,0.92)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(pad, pad, LW - pad * 2, LH - pad * 2);
+    ctx.restore();
+
+    ctx.fillStyle = hexA(color, 0.95);
+    ctx.font = "600 24px Inter, Arial, sans-serif";
+    ctx.textBaseline = "alphabetic";
+    ctx.fillText((ch.kicker || "").toUpperCase(), pad + 42, LH - 96);
+    ctx.fillStyle = "#f4f6fa";
+    ctx.font = "700 66px Inter, Arial, sans-serif";
+    ctx.fillText(ch.title, pad + 40, LH - 44);
+
+    roundRect(ctx, pad, pad, LW - pad * 2, LH - pad * 2, r);
+    ctx.strokeStyle = hexA(color, 0.5);
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    return;
+  }
+
+  /* ---- browser-window panel ---- */
+  const barH = 62;
+  roundRect(ctx, pad, pad, LW - pad * 2, LH - pad * 2, r);
+  const g = ctx.createLinearGradient(0, pad, 0, LH - pad);
   g.addColorStop(0, "#11141c");
   g.addColorStop(1, "#0a0c12");
   ctx.fillStyle = g;
   ctx.fill();
 
-  // brand glow at top
   ctx.save();
-  roundRect(ctx, pad, pad, TW - pad * 2, TH - pad * 2, r);
+  roundRect(ctx, pad, pad, LW - pad * 2, LH - pad * 2, r);
   ctx.clip();
-  const rg = ctx.createRadialGradient(TW * 0.5, pad, 0, TW * 0.5, pad, TW * 0.7);
+  const rg = ctx.createRadialGradient(LW * 0.5, pad, 0, LW * 0.5, pad, LW * 0.7);
   rg.addColorStop(0, hexA(color, 0.28));
   rg.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = rg;
-  ctx.fillRect(0, 0, TW, TH);
-  ctx.restore();
+  ctx.fillRect(0, 0, LW, LH);
 
-  // browser chrome bar
-  ctx.save();
-  roundRect(ctx, pad, pad, TW - pad * 2, TH - pad * 2, r);
-  ctx.clip();
   ctx.fillStyle = "rgba(255,255,255,0.04)";
-  ctx.fillRect(pad, pad, TW - pad * 2, barH);
+  ctx.fillRect(pad, pad, LW - pad * 2, barH);
   ["#ff5f57", "#febc2e", "#28c840"].forEach((c, k) => {
     ctx.beginPath();
     ctx.fillStyle = hexA(c, 0.85);
     ctx.arc(pad + 34 + k * 26, pad + barH / 2, 7, 0, Math.PI * 2);
     ctx.fill();
   });
-  // url pill
-  roundRect(ctx, pad + 130, pad + barH / 2 - 15, TW - pad * 2 - 160, 30, 15);
+  roundRect(ctx, pad + 130, pad + barH / 2 - 15, LW - pad * 2 - 160, 30, 15);
   ctx.fillStyle = "rgba(255,255,255,0.05)";
   ctx.fill();
   ctx.fillStyle = "rgba(255,255,255,0.5)";
@@ -88,28 +111,20 @@ function drawPanel(canvas, ch, img) {
   ctx.textBaseline = "middle";
   ctx.fillText(ch.domain || domainOf(ch.link && ch.link.url), pad + 156, pad + barH / 2 + 1);
 
-  // content area (below the bar)
-  const cx = pad, cy = pad + barH, cw = TW - pad * 2, chH = TH - pad - cy;
-
+  const cx = pad, cy = pad + barH, cw = LW - pad * 2, chH = LH - pad - cy;
   if (img) {
     coverDraw(ctx, img, cx, cy, cw, chH);
   } else {
-    // ---- clean mockup ----
+    ctx.textBaseline = "top";
     ctx.fillStyle = "#f2f4f8";
     ctx.font = "700 72px Inter, Arial, sans-serif";
-    ctx.textBaseline = "top";
     ctx.fillText(ch.title, cx + 48, cy + 54);
-
     ctx.fillStyle = hexA(color, 0.95);
     ctx.font = "600 24px Inter, Arial, sans-serif";
     ctx.fillText((ch.kicker || "").toUpperCase(), cx + 50, cy + 30);
-
     ctx.fillStyle = "rgba(255,255,255,0.45)";
     ctx.font = "400 26px Inter, Arial, sans-serif";
-    const blurb = (ch.blurb || "").slice(0, 74);
-    ctx.fillText(blurb, cx + 48, cy + 148);
-
-    // faux content tiles
+    ctx.fillText((ch.blurb || "").slice(0, 74), cx + 48, cy + 148);
     const ty = cy + 210;
     for (let k = 0; k < 3; k++) {
       roundRect(ctx, cx + 48 + k * ((cw - 96 - 40) / 3 + 20), ty, (cw - 96 - 40) / 3, 150, 16);
@@ -122,8 +137,7 @@ function drawPanel(canvas, ch, img) {
   }
   ctx.restore();
 
-  // border
-  roundRect(ctx, pad, pad, TW - pad * 2, TH - pad * 2, r);
+  roundRect(ctx, pad, pad, LW - pad * 2, LH - pad * 2, r);
   ctx.strokeStyle = hexA(color, 0.45);
   ctx.lineWidth = 2;
   ctx.stroke();
@@ -164,10 +178,11 @@ export default class Chapters {
     this.raycaster = new THREE.Raycaster();
     this.cards = [];
 
-    const geo = new THREE.PlaneGeometry(PW, PH, 1, 1);
     this.chapters.forEach((ch, i) => {
+      const aspect = ch.aspect || 1.6;
+      const lw = Math.round(BASE_TH * aspect), lh = BASE_TH;
       const canvas = document.createElement("canvas");
-      canvas.width = TW * SCALE; canvas.height = TH * SCALE;
+      canvas.width = lw * SCALE; canvas.height = lh * SCALE;
       drawPanel(canvas, ch, null);
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
@@ -175,14 +190,14 @@ export default class Chapters {
       tex.minFilter = THREE.LinearMipmapLinearFilter;
       tex.generateMipmaps = true;
 
-      // upgrade to a real screenshot if one is provided
       if (ch.image) {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => { drawPanel(canvas, ch, img); tex.needsUpdate = true; };
-        img.src = ch.image;
+        const im = new Image();
+        im.crossOrigin = "anonymous";
+        im.onload = () => { drawPanel(canvas, ch, im); tex.needsUpdate = true; };
+        im.src = ch.image;
       }
 
+      const geo = new THREE.PlaneGeometry(BASE_H * aspect, BASE_H);
       const mesh = new THREE.Mesh(
         geo,
         new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false })
@@ -190,6 +205,7 @@ export default class Chapters {
       mesh.position.z = -(FOCUS_DIST + i * SPACING);
       mesh.userData.index = i;
       mesh.userData.sway = Math.random() * 6.28;
+      mesh.userData.sizeMul = ch.sizeMul || 1;
       this.group.add(mesh);
       this.cards.push(mesh);
     });
@@ -244,9 +260,9 @@ export default class Chapters {
 
     this.cards.forEach((mesh, i) => {
       const worldZ = mesh.position.z + this.group.position.z;
-      const dz = worldZ + FOCUS_DIST; // 0 at focus, <0 further back, >0 past the camera
+      const dz = worldZ + FOCUS_DIST;
+      const mul = mesh.userData.sizeMul;
 
-      // centred stack — only subtle float + cursor parallax, no corner sweep
       const near = THREE.MathUtils.clamp(1 - Math.abs(dz) / (SPACING * 1.4), 0, 1);
       mesh.position.x = this.mouse.x * 0.22 * near;
       mesh.position.y = Math.sin(t * 0.4 + mesh.userData.sway) * 0.04 + this.mouse.y * 0.13 * near;
@@ -254,16 +270,15 @@ export default class Chapters {
       mesh.rotation.x = 0.015 + this.mouse.y * -0.06 * near;
 
       if (dz > 0) {
-        // flying past the camera: grow + fade out, revealing the next
-        mesh.scale.setScalar(1.4 + dz * 0.22);
+        mesh.scale.setScalar((1.4 + dz * 0.22) * mul);
         mesh.material.opacity = Math.max(0, 1 - dz / (SPACING * 0.5));
       } else {
-        const kk = Math.min(-dz / (SPACING * 1.8), 1); // 0 at focus -> 1 far back
-        mesh.scale.setScalar(1.4 - kk * 0.22);
-        mesh.material.opacity = 1; // opaque; hidden behind the focused one
+        const kk = Math.min(-dz / (SPACING * 1.8), 1);
+        mesh.scale.setScalar((1.4 - kk * 0.22) * mul);
+        mesh.material.opacity = 1;
       }
       mesh.visible = mesh.material.opacity > 0.02;
-      mesh.renderOrder = Math.round(worldZ * 100); // nearer draws on top -> clean occlusion
+      mesh.renderOrder = Math.round(worldZ * 100);
 
       if (Math.abs(dz) < bestAbs && dz < SPACING * 0.4) { bestAbs = Math.abs(dz); bestIdx = i; }
     });
@@ -273,9 +288,7 @@ export default class Chapters {
     let hover = -1;
     if (this.pointer.x > -1.5) {
       this.raycaster.setFromCamera(this.pointer, this.camera);
-      const hits = this.raycaster.intersectObjects(
-        this.cards.filter((c) => c.visible && c.material.opacity > 0.5)
-      );
+      const hits = this.raycaster.intersectObjects(this.cards.filter((c) => c.visible && c.material.opacity > 0.5));
       if (hits.length) hover = hits[0].object.userData.index;
     }
     if (hover !== this.hovered) {
