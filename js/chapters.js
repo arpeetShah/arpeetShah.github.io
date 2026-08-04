@@ -86,7 +86,7 @@ function drawPanel(canvas, ch, img) {
   ctx.fillStyle = "rgba(255,255,255,0.5)";
   ctx.font = "500 20px Inter, Arial, sans-serif";
   ctx.textBaseline = "middle";
-  ctx.fillText(domainOf(ch.link && ch.link.url), pad + 156, pad + barH / 2 + 1);
+  ctx.fillText(ch.domain || domainOf(ch.link && ch.link.url), pad + 156, pad + barH / 2 + 1);
 
   // content area (below the bar)
   const cx = pad, cy = pad + barH, cw = TW - pad * 2, chH = TH - pad - cy;

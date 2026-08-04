@@ -1,5 +1,5 @@
 import Scene from "./scene.js";
-import Chapters from "./chapters.js?b=37";
+import Chapters from "./chapters.js?b=38";
 import ModelViewer from "./modelviewer.js";
 import Ambience from "./audio.js";
 import Fireworks from "./fireworks.js";
@@ -18,29 +18,30 @@ const CONTENT = {
   role1: "Write.",
   role2: "Build.",
   role3: "Serve.",
-  eyebrow: "WRITER · FOUNDER · ATHLETE — MCKINNEY, TX",
+  eyebrow: "RESEARCHER · FOUNDER · WRITER — MCKINNEY, TX",
   heroSub:
-    "I write The Pulse, co-founded a marketing agency, compete in cricket and tennis, and build the things that carry it all.",
+    "I'm researching whether a computer can predict epileptic seizures, co-founded a marketing agency, and write The Pulse — all of it building toward a life in medicine.",
 
   bio1:
-    "I'm Arpeet — a high school student in McKinney, Texas. I write The Pulse, a weekly publication for high schoolers. I co-founded Orvexa, a social media marketing agency for small local businesses. I play cricket and tennis, and I tutor younger kids for free.",
+    "I'm Arpeet — a high school student in McKinney, Texas — and almost everything I do comes back to one instinct: take something real and complicated, and make it genuinely useful to someone. Right now that looks like independent neuroscience research, teaching a computer to spot epileptic seizures in raw brainwaves, and The Pulse, where I turn medical and health research into writing a teenager will actually read.",
   bio2:
-    "Saturdays are for seva at BAPS Shri Swaminarayan Mandir, and most of the rest of my time goes to my family. After high school, I want to study medicine.",
+    "It also looks like Orvexa, the marketing agency I co-founded to get small local businesses seen; cricket and tennis, which taught me how to lose and keep going; and my Saturdays at the mandir, which are the foundation the rest of it sits on. After high school I want to study medicine — and keep doing work that helps the community I'm standing in.",
 
-  focus: ["Writing & Journalism", "Content & Marketing", "Web Development", "Research"],
-  toolkit: ["JavaScript", "HTML / CSS", "Python", "Three.js", "Figma", "Notion"],
+  focus: ["Neuroscience Research", "Writing & Journalism", "Content & Marketing", "Creative Dev"],
+  toolkit: ["Python", "MNE / EEG", "JavaScript", "Three.js", "Figma", "Research"],
 
   email: "arpeet.s.shah@gmail.com",
 
   // "Now" — what you're focused on this season. Update the date + items freely.
   now: {
     lede: "What I'm focused on right now — and where it's headed.",
-    updated: "Updated July 2026",
+    updated: "Updated August 2026",
     items: [
-      "Keeping The Pulse's every-Sunday streak alive and growing readership.",
-      "Landing Orvexa's first clients and sharpening our content playbook.",
-      "Training for tennis season and staying sharp in cricket.",
-      "The long game: studying medicine — hopefully at Johns Hopkins — to do work that helps the community I'm in.",
+      "Pushing my EEG seizure-detection research toward cross-patient testing and a real classifier — the heart of my AAN Neuroscience Research Prize submission.",
+      "Landing Orvexa's first clients and sharpening the content playbook we run for them.",
+      "Writing The Pulse — turning real medical and health research into pieces teenagers actually read.",
+      "Training for tennis season, staying sharp in cricket, and my Saturdays at the mandir.",
+      "The long game: studying medicine — hopefully at Johns Hopkins — to do work that helps the community I'm standing in.",
     ],
   },
 
@@ -56,28 +57,32 @@ const CONTENT = {
      ---------------------------------------------------------- */
   chapters: [
     {
-      title: "The Pulse",
-      kicker: "What I Built",
-      color: "#6ee7ff",
-      model: "torusKnot",
-      image: "images/pulse-home.png",
-      link: { label: "Read The Pulse", url: "https://arpeetshah.github.io/the-pulse/" },
-      blurb: "A weekly publication for high schoolers — founded, researched, written and coded by me.",
-      lede: "I couldn't find media written for people like me. So I built it.",
+      title: "Seizure Detection",
+      kicker: "Neuroscience Research",
+      color: "#ff5c72",
+      model: "icosahedron",
+      image: "images/neuro-eeg.png",
+      domain: "research · eeg-seizure-detection",
+      blurb: "Teaching a computer to catch an epileptic seizure from raw brainwaves — my independent research for the AAN Neuroscience Research Prize.",
+      lede: "Fifty million people live with seizures that strike without warning. I'm trying to teach a computer to see them coming.",
       body: [
-        "The Pulse is a weekly publication covering what actually matters to high schoolers — sports and performance, money and entrepreneurship, mental health, science, and local stories worth knowing.",
-        "I do all of it: pick the topic, read the studies, check the sources, write the piece, design the site, and ship it. It goes out every Sunday morning. It's free, and it always will be.",
-        "The model is simple — <strong>real topics, real research, real voice</strong>. No fluff, no filler, no condescension.",
+        "Epilepsy affects roughly <strong>50 million people</strong>, and one of its cruelest features is unpredictability — seizures strike with no warning, and diagnosis still depends on trained specialists manually reading EEG traces, which is slow, expensive, and not always available. My research question is simple to ask and hard to answer: <strong>can a computer detect — and eventually predict — a seizure directly from raw brain-electrical activity</strong>, using measurable, mathematically-defined features instead of a human expert?",
+        "I work with the <strong>CHB-MIT Scalp EEG Database</strong> — real, clinically-collected recordings from pediatric epilepsy patients at Boston Children's Hospital, open-access on PhysioNet. Each recording runs about an hour across 23 electrode channels at 256 measurements per second, and every file is hand-labeled by clinicians with exactly when a seizure happened. That's my ground truth: the answer key everything gets validated against.",
+        "First I made the pattern <strong>visible</strong>. Loading a recording with the MNE library, I plotted ten seconds of calm baseline against ten seconds of confirmed seizure on the same channel (FP1-F7). The seizure window showed dramatically larger, more rhythmic swings — and that's real neuroscience, not a coincidence: during a seizure, huge populations of neurons abnormally fire <em>together</em> in synchronized bursts, and synchronized signals add up instead of cancelling out.",
+        "Then I made it <strong>measurable</strong>. I sliced the hour into 1,799 two-second windows and computed the variance of each — one number for 'how much does this signal swing.' Seizure windows averaged about <strong>9× higher variance</strong> than normal ones. Because one result from one seizure isn't trustworthy, I re-ran the identical method on a second, independent seizure and got <strong>8.3×</strong>. Two independent tests, nearly the same answer — evidence of a real, repeatable signal, not a fluke.",
+        "Next is the honest hard part: testing whether it holds <strong>across different patients</strong>, training a real classifier, moving to frequency-band features (delta, theta, alpha, beta, gamma), and finally the ambitious goal — spotting the <strong>pre-ictal window before a seizure begins</strong>. That's an unsolved problem in real epilepsy research, which is exactly why it's worth attempting. It's all documented phase by phase, and it'll become a paper reporting sensitivity and specificity — plus an explainer built for the patients and families who'd actually use it.",
+        "This grew out of a Parkinson's voice-analysis project I built to a validated ~70% accuracy, then reshaped after studying a rigorously-built engineering project as a template: start with a real problem, build understanding in layers, and back every single claim with honest, reported data.",
       ],
       stats: [
-        { k: "Founded", v: "2025" },
-        { k: "Cadence", v: "Every Sunday" },
-        { k: "Role", v: "Founder / Writer / Dev" },
-        { k: "Price", v: "Free, always" },
+        { k: "For", v: "AAN Neuroscience Research Prize" },
+        { k: "Data", v: "CHB-MIT Scalp EEG · PhysioNet" },
+        { k: "Method", v: "Python · MNE · variance → ML" },
+        { k: "Finding", v: "Seizure variance ~9× baseline" },
+        { k: "Validated", v: "2 independent seizures" },
+        { k: "Status", v: "Phase 1 — in progress" },
       ],
       media: [
-        { src: "images/pulse-home.png", caption: "The Pulse homepage" },
-        { src: "images/pulse-social.png", caption: "@read_thepulse" },
+        { src: "images/neuro-eeg.png", caption: "Baseline vs. seizure activity — channel FP1-F7" },
       ],
     },
     {
@@ -135,6 +140,25 @@ const CONTENT = {
   // "Life" — the human side, shown as calm cards inside About.
   life: [
     {
+      featured: true,
+      title: "Service & Faith",
+      kicker: "What I show up for — the part I'm proudest of",
+      body: [
+        "Every Saturday, before almost anything else in my week, I'm at <strong>BAPS Shri Swaminarayan Mandir</strong>. It's the foundation the rest of this page sits on.",
+        "I spend at least <strong>three hours teaching younger kids</strong> about our religion. Then I help run the main weekly program that <strong>around 1,000 people attend</strong> — setting it up from the ground, and then <strong>serving food to every single person</strong>, for no money, just to help others. When everyone has eaten, I'm one of the people <strong>washing the dishes afterward</strong>. Nobody's watching that part, which is sort of the whole point.",
+        "I also <strong>lead the programming for Sabha</strong> — our weekly spiritual class, where about <strong>60 high-schoolers and college students</strong> come to learn more about our faith. Being trusted to plan and shape that hour has taught me more about real leadership than any title could.",
+        "Alongside the mandir, I tutor younger students for free — again, not for pay, just because they need the help. All of this is where my values actually come from, and it's the thing that keeps school, tennis, Orvexa, and my research in proportion. Showing up quietly, every single week, matters more than showing up impressively.",
+      ],
+      stats: [
+        { k: "Where", v: "BAPS Shri Swaminarayan Mandir" },
+        { k: "Every week", v: "Saturday · 7+ hours" },
+        { k: "Teach", v: "3+ hrs, younger kids" },
+        { k: "Serve", v: "~1,000 people, free" },
+        { k: "Lead", v: "Sabha — ~60 students" },
+        { k: "Also", v: "Free tutoring" },
+      ],
+    },
+    {
       title: "Two Sports",
       kicker: "Where I compete",
       body: "Cricket for seven years at the national level — multiple tournament MVPs — and three years on the Emerson High School tennis team, with several titles. One taught me the long game; the other taught me that when it's tight, nobody's coming to fix the next point but me.",
@@ -144,24 +168,53 @@ const CONTENT = {
       ],
     },
     {
-      title: "Service & Faith",
-      kicker: "What I show up for",
-      body: "I tutor younger students for free — not for pay, just because they need it. And every Saturday I spend about seven hours doing seva at BAPS Shri Swaminarayan Mandir. It's the foundation of my values, and it keeps everything else in proportion.",
-      stats: [
-        { k: "Tutoring", v: "Free, 1-on-1" },
-        { k: "Seva", v: "~7 hrs every Saturday" },
-      ],
-    },
-    {
       title: "Home & Family",
       kicker: "Where I'm from",
-      body: "McKinney, Texas — my mom, my dad, and my older brother up in Minnesota who went first. Home base for all of it, and a place I care enough about to cover in The Pulse's Local Spotlights. Family isn't the thing I fit around everything else; it's the thing everything else fits around.",
+      body: "McKinney, Texas — my mom, my dad, and my older brother up in Minnesota who went first. Home base for all of it. Family isn't the thing I fit around everything else; it's the thing everything else fits around.",
       stats: [
         { k: "Based in", v: "McKinney, TX" },
         { k: "Family", v: "Mom · Dad · Brother" },
       ],
     },
   ],
+
+  // THE PULSE — standalone editorial section
+  pulse: {
+    eyebrow: "The Publication",
+    lede: "A weekly publication where I turn real medical and health research into something a teenager will actually read.",
+    purpose: [
+      "I couldn't find health and science writing made for people my age — not dumbed down, not clickbait, just real research explained like a human being wrote it. So I made it.",
+      "Every Sunday I take one question about how our bodies and minds actually work, dig through the real studies, check the sources, and write it the way I'd explain it to a friend at lunch. Every claim that matters has a citation at the bottom of the page. It's careful, it's honest, and it's <strong>free — always</strong>.",
+      "It's the same instinct behind my neuroscience research: take something genuinely complex, and make it useful to the people it actually affects.",
+    ],
+    cta: { label: "Read The Pulse", url: "https://arpeetshah.github.io/the-pulse/" },
+    articles: [
+      {
+        category: "Neuroscience", date: "Aug 2, 2026",
+        title: "Can a Computer Predict a Seizure?",
+        excerpt: "What brainwaves reveal about epilepsy — and how close we actually are to catching a seizure before it starts.",
+        url: "https://arpeetshah.github.io/the-pulse/articles/predicting-seizures.html",
+      },
+      {
+        category: "Neuroscience", date: "May 4, 2025",
+        title: "Why Your Brain Works Differently After 10 PM",
+        excerpt: "There's a real biological reason late nights feel different — and it isn't a lack of willpower.",
+        url: "https://arpeetshah.github.io/the-pulse/articles/brain-at-night.html",
+      },
+      {
+        category: "Cognitive Science", date: "May 25, 2025",
+        title: "How to Actually Study — Not Just Reread Your Notes",
+        excerpt: "The science of what makes information stick, and why rereading barely works.",
+        url: "https://arpeetshah.github.io/the-pulse/articles/how-to-actually-study.html",
+      },
+      {
+        category: "Mental Health", date: "May 18, 2025",
+        title: "You Don't Have to Choose Between Grades and Having Fun",
+        excerpt: "The research on stress and balance — and why the tension you feel is real, but manageable.",
+        url: "https://arpeetshah.github.io/the-pulse/articles/grades-and-fun.html",
+      },
+    ],
+  },
 
   writing: [
     {
@@ -241,36 +294,46 @@ function hydrate() {
   // Life cards (About)
   if (CONTENT.life) {
     $("lifeCards").innerHTML = CONTENT.life
-      .map(
-        (c) => `
-        <div class="life__card reveal-up">
+      .map((c) => {
+        const body = Array.isArray(c.body)
+          ? c.body.map((p) => `<p class="life__body">${p}</p>`).join("")
+          : `<p class="life__body">${c.body}</p>`;
+        return `
+        <div class="life__card reveal-up${c.featured ? " life__card--featured" : ""}">
           <span class="life__kicker">${c.kicker}</span>
           <h3 class="life__title">${c.title}</h3>
-          <p class="life__body">${c.body}</p>
+          ${body}
           <dl class="life__stats">${(c.stats || [])
             .map((s) => `<div><dt>${s.k}</dt><dd>${s.v}</dd></div>`)
             .join("")}</dl>
-        </div>`
-      )
+        </div>`;
+      })
       .join("");
   }
 
-  $("writing-list").innerHTML = CONTENT.writing
-    .map(
-      (a) => `
-      <a class="article" href="${a.url}" data-cursor ${
-        a.url.startsWith("http") ? 'target="_blank" rel="noopener"' : ""
-      }>
-        <div class="article__top">
-          <span class="article__cat" data-cat="${a.cat}">${a.category}</span>
-          <span class="article__date">${a.date}</span>
-        </div>
-        <h3 class="article__title">${a.title}</h3>
-        <p class="article__excerpt">${a.excerpt}</p>
-        <span class="article__link">Read article</span>
-      </a>`
-    )
-    .join("");
+  // The Pulse section
+  if (CONTENT.pulse) {
+    const p = CONTENT.pulse;
+    $("pulseEyebrow").textContent = p.eyebrow;
+    $("pulseLede").textContent = p.lede;
+    $("pulsePurpose").innerHTML = p.purpose.map((x) => `<p class="reveal-up">${x}</p>`).join("");
+    $("pulseArticles").innerHTML = p.articles
+      .map(
+        (a) => `
+        <a class="pulse__article reveal-up" href="${a.url}" target="_blank" rel="noopener" data-cursor>
+          <span class="pulse__article__cat">${a.category}<em>${a.date}</em></span>
+          <div>
+            <h3 class="pulse__article__title">${a.title}</h3>
+            <p class="pulse__article__excerpt">${a.excerpt}</p>
+          </div>
+          <span class="pulse__article__arrow">↗</span>
+        </a>`
+      )
+      .join("");
+    const cta = $("pulseCta");
+    cta.href = p.cta.url;
+    cta.innerHTML = `${p.cta.label} <i>↗</i>`;
+  }
 
   // only render links that actually go somewhere
   $("socials").innerHTML = CONTENT.socials
@@ -620,7 +683,7 @@ function initScroll(scene, chapters) {
   const sectionLabel = $("sectionLabel"), sectionNum = $("sectionNum"), sectionName = $("sectionName");
   const SECTIONS = [
     { id: "work", num: "01", name: "Work" },
-    { id: "writing", num: "02", name: "Writing" },
+    { id: "pulse", num: "02", name: "The Pulse" },
     { id: "about", num: "03", name: "About" },
     { id: "now", num: "04", name: "Now & Next" },
     { id: "contact", num: "05", name: "Contact" },

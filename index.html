@@ -184,14 +184,19 @@
       </svg>
     </div>
 
-    <!-- WRITING -->
-    <section class="writing" id="writing">
-      <div class="section-head">
-        <span class="section-head__num">02</span>
-        <h2 class="section-head__title reveal-up">Writing</h2>
-      </div>
-      <div class="writing-list" id="writing-list">
-        <!-- injected from js -->
+    <!-- THE PULSE — standalone editorial section (unique hot-pink template) -->
+    <section class="pulse" id="pulse">
+      <div class="pulse__inner">
+        <span class="pulse__eyebrow reveal-up" id="pulseEyebrow"></span>
+        <h2 class="pulse__masthead reveal-up">THE PULSE</h2>
+        <svg class="pulse__ekg" viewBox="0 0 640 44" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 22 H240 l10 -17 l11 34 l11 -28 l8 11 H640" />
+        </svg>
+        <p class="pulse__lede reveal-up" id="pulseLede"></p>
+        <div class="pulse__purpose" id="pulsePurpose"></div>
+        <div class="pulse__head"><span>Recent — real research, honestly explained</span></div>
+        <div class="pulse__articles" id="pulseArticles"><!-- injected --></div>
+        <a class="pulse__cta reveal-up" id="pulseCta" target="_blank" rel="noopener" data-cursor></a>
       </div>
     </section>
 
@@ -292,6 +297,6 @@
     </div>
   </div>
 
-  <script type="module" src="js/main.js?b=37"></script>
+  <script type="module" src="js/main.js?b=38"></script>
 </body>
 </html>
