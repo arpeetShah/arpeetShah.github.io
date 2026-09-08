@@ -747,7 +747,10 @@ body.is-card-hover .cursor { width: 68px; height: 68px; margin: -34px 0 0 -34px;
   background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0) 70%);
   overflow: hidden;
 }
-.detail__model { width: 100%; height: 100%; display: block; }
+.detail__symbol { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.detail__symbol img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.detail__symbol--icon { padding: 20%; box-sizing: border-box; }
+.detail__symbol--icon svg { width: 100%; height: 100%; }
 .detail__stats { margin: 0; display: grid; gap: 2px; }
 .detail__stats div {
   display: flex;
@@ -990,8 +993,22 @@ body.is-card-hover .cursor { width: 68px; height: 68px; margin: -34px 0 0 -34px;
 .pulse__article__cat em { display: block; font-style: normal; margin-top: 4px; color: rgba(42, 4, 16, 0.5); letter-spacing: 0.02em; }
 .pulse__article__title { font-family: var(--font-display); font-weight: 600; font-size: clamp(20px, 2.5vw, 32px); line-height: 1.08; color: #2a0410; letter-spacing: -0.015em; }
 .pulse__article__excerpt { font-size: 14.5px; line-height: 1.5; color: rgba(42, 4, 16, 0.72); margin: 8px 0 0; max-width: 62ch; }
-.pulse__article__arrow { font-size: 24px; color: #fff; transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
-.pulse__article:hover .pulse__article__arrow { transform: translate(7px, -7px); }
+.pulse__article__links { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.pulse__article__links a {
+  font-size: 12.5px; letter-spacing: 0.02em; color: #fff; white-space: nowrap;
+  background: rgba(42, 4, 16, 0.82); padding: 8px 16px; border-radius: 100px;
+  transition: background 0.3s, transform 0.3s;
+}
+.pulse__article__links a:hover { background: #2a0410; transform: translateY(-2px); }
+.pulse__article--pinned {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: clamp(26px, 3vw, 40px);
+  border-bottom-color: transparent;
+  margin-bottom: 10px;
+}
+.pulse__article--pinned .pulse__article__cat { color: #fff; font-weight: 700; }
+.pulse__article--pinned .pulse__article__title { font-size: clamp(24px, 3.2vw, 42px); }
 .pulse__cta {
   display: inline-flex; align-items: center; gap: 10px;
   margin-top: clamp(36px, 5vw, 58px);
@@ -1003,7 +1020,58 @@ body.is-card-hover .cursor { width: 68px; height: 68px; margin: -34px 0 0 -34px;
 .pulse__cta i { font-style: normal; }
 @media (max-width: 640px) {
   .pulse__article { grid-template-columns: 1fr; gap: 8px; }
-  .pulse__article__arrow { display: none; }
+  .pulse__article__links { flex-direction: row; align-items: flex-start; }
+}
+
+/* ---------- Research — clinical / academic section ---------- */
+.research {
+  position: relative;
+  z-index: 4;
+  background: linear-gradient(180deg, #05070a 0%, #070b12 100%);
+  padding: clamp(84px, 13vh, 160px) var(--pad);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.research__inner { max-width: var(--max); margin: 0 auto; }
+.research__eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.research__title {
+  font-size: clamp(34px, 6vw, 76px);
+  line-height: 0.95;
+  margin: 0 0 clamp(40px, 6vw, 64px);
+}
+.research__question {
+  margin: 0 0 clamp(48px, 6vw, 80px);
+  padding: clamp(24px, 3vw, 36px) clamp(26px, 3vw, 42px);
+  border-left: 3px solid var(--accent);
+  background: linear-gradient(90deg, rgba(110, 231, 255, 0.08), rgba(110, 231, 255, 0) 72%);
+  border-radius: 0 16px 16px 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(22px, 3.2vw, 34px);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  max-width: 36ch;
+  color: var(--fg);
+}
+.research__cols {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: clamp(32px, 5vw, 76px);
+  align-items: start;
+}
+.research__body p { font-size: 16px; line-height: 1.72; color: var(--muted); margin: 0 0 20px; max-width: 66ch; }
+.research__body strong { color: var(--fg); font-weight: 500; }
+.research__stats { margin: 0; border-top: 1px solid var(--line); display: grid; gap: 2px; }
+.research__stats div { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.research__stats dt { font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.research__stats dd { margin: 0; font-size: 14px; color: var(--fg); text-align: right; }
+@media (max-width: 780px) {
+  .research__cols { grid-template-columns: 1fr; }
 }
 
 /* ---------- Writing ---------- */

@@ -150,6 +150,32 @@
       </p>
     </section>
 
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="section-head">
+        <span class="section-head__num">01</span>
+        <h2 class="section-head__title reveal-up">About</h2>
+      </div>
+      <div class="about__grid">
+        <div class="about__bio">
+          <p class="reveal-up" data-bio-1></p>
+          <p class="reveal-up" data-bio-2></p>
+        </div>
+        <div class="about__meta">
+          <div class="about__block">
+            <span class="about__k">Focus</span>
+            <ul id="focusList"></ul>
+          </div>
+          <div class="about__block">
+            <span class="about__k">Toolkit</span>
+            <ul id="toolkitList"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="life" id="lifeCards"><!-- injected --></div>
+    </section>
+
     <!-- CHAPTERS — 3D flythrough: cards come toward you as you scroll -->
     <section class="chapters" id="work">
       <div class="chapters__sticky">
@@ -157,7 +183,7 @@
         <div class="chapters__scrim" aria-hidden="true"></div>
         <div class="chapters__ui">
           <div class="chapters__head">
-            <span class="section-head__num">01</span>
+            <span class="section-head__num">02</span>
             <span class="chapters__label">Chapters</span>
           </div>
           <div class="chapters__focus" id="chFocus">
@@ -185,6 +211,24 @@
       </svg>
     </div>
 
+    <!-- RESEARCH — clinical / academic, standalone -->
+    <section class="research" id="research">
+      <div class="research__inner">
+        <div class="section-head">
+          <span class="section-head__num">03</span>
+          <span class="research__eyebrow reveal-up" id="researchEyebrow"></span>
+        </div>
+        <h2 class="research__title reveal-up" id="researchTitle"></h2>
+
+        <blockquote class="research__question reveal-up" id="researchQuestion"></blockquote>
+
+        <div class="research__cols">
+          <div class="research__body" id="researchBody"></div>
+          <dl class="research__stats reveal-up" id="researchStats"></dl>
+        </div>
+      </div>
+    </section>
+
     <!-- THE PULSE — standalone editorial section (unique hot-pink template) -->
     <section class="pulse" id="pulse">
       <div class="fog fog--light" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -202,7 +246,7 @@
       </div>
     </section>
 
-    <!-- ORVEXA — "In the Making" (subtle, contained) -->
+    <!-- ORVEXA — website design & development -->
     <section class="making" id="orvexa">
       <div class="making__inner">
         <div class="making__text">
@@ -214,32 +258,6 @@
         </div>
         <a class="making__media" id="makingMedia" target="_blank" rel="noopener" data-cursor aria-label="Visit Orvexa"></a>
       </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section class="about" id="about">
-      <div class="section-head">
-        <span class="section-head__num">04</span>
-        <h2 class="section-head__title reveal-up">About</h2>
-      </div>
-      <div class="about__grid">
-        <div class="about__bio">
-          <p class="reveal-up" data-bio-1></p>
-          <p class="reveal-up" data-bio-2></p>
-        </div>
-        <div class="about__meta">
-          <div class="about__block">
-            <span class="about__k">Focus</span>
-            <ul id="focusList"></ul>
-          </div>
-          <div class="about__block">
-            <span class="about__k">Toolkit</span>
-            <ul id="toolkitList"></ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="life" id="lifeCards"><!-- injected --></div>
     </section>
 
     <div class="pulse-rule" aria-hidden="true">
@@ -270,7 +288,7 @@
     <!-- NOW -->
     <section class="now" id="now">
       <div class="section-head">
-        <span class="section-head__num">06</span>
+        <span class="section-head__num">07</span>
         <h2 class="section-head__title reveal-up">Now &amp; Next</h2>
       </div>
       <div class="now__inner">
@@ -312,7 +330,7 @@
           <div class="detail__body" id="dBody"></div>
           <aside class="detail__side">
             <div class="detail__modelwrap">
-              <canvas class="detail__model" id="dModel"></canvas>
+              <div class="detail__symbol" id="dSymbol"></div>
             </div>
             <dl class="detail__stats" id="dStats"></dl>
           </aside>
@@ -324,6 +342,6 @@
     </div>
   </div>
 
-  <script type="module" src="js/main.js?b=39"></script>
+  <script type="module" src="js/main.js?b=40"></script>
 </body>
 </html>

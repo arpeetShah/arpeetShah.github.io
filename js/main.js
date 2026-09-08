@@ -1,6 +1,5 @@
 import Scene from "./scene.js";
-import Chapters from "./chapters.js?b=39";
-import ModelViewer from "./modelviewer.js";
+import Chapters from "./chapters.js?b=40";
 import Ambience from "./audio.js";
 import Fireworks from "./fireworks.js";
 import Lenis from "lenis";
@@ -61,6 +60,7 @@ const CONTENT = {
       kicker: "Neuroscience Research",
       color: "#ff5c72",
       model: "icosahedron",
+      symbolImage: "images/neuro-eeg.png",
       aspect: 1.6,
       sizeMul: 1.06,
       image: "images/neuro-eeg.png",
@@ -92,6 +92,7 @@ const CONTENT = {
       kicker: "What I'm Building",
       color: "#ff7ac6",
       model: "icosahedron",
+      symbolImage: "images/portfolio-hero.png",
       aspect: 1.6,
       sizeMul: 0.94,
       image: "images/portfolio-hero.png",
@@ -120,6 +121,7 @@ const CONTENT = {
       kicker: "Skills & Tools",
       color: "#7ce7ff",
       model: "octahedron",
+      symbolIcon: "toolkit",
       aspect: 1,
       variant: "photo",
       sizeMul: 1.0,
@@ -187,47 +189,66 @@ const CONTENT = {
     lede: "A weekly publication where I turn real medical and health research into something a teenager will actually read.",
     purpose: [
       "I couldn't find health and science writing made for people my age — not dumbed down, not clickbait, just real research explained like a human being wrote it. So I made it.",
-      "Every Sunday I take one question about how our bodies and minds actually work, dig through the real studies, check the sources, and write it the way I'd explain it to a friend at lunch. Every claim that matters has a citation at the bottom of the page. It's careful, it's honest, and it's <strong>free — always</strong>.",
+      "Every claim that matters has a citation at the bottom of the page. It's careful, it's honest, and it's <strong>free — always</strong>.",
       "It's the same instinct behind my neuroscience research: take something genuinely complex, and make it useful to the people it actually affects.",
     ],
-    cta: { label: "Read The Pulse", url: "https://arpeetshah.github.io/the-pulse/" },
+    cta: { label: "Subscribe on Substack", url: "https://arpeetshah.substack.com" },
     articles: [
       {
-        category: "Neuroscience", date: "Aug 2, 2026",
-        title: "Can a Computer Predict a Seizure?",
-        excerpt: "What brainwaves reveal about epilepsy — and how close we actually are to catching a seizure before it starts.",
-        url: "https://arpeetshah.github.io/the-pulse/articles/predicting-seizures.html",
+        featured: true,
+        date: "Sep 5, 2026",
+        title: "The Voice That Shows Up Before Everything That Matters.",
+        excerpt: "It's not weakness. It's neuroscience — why self-doubt shows up right before everything that matters, and what to do with it.",
+        substack: "https://arpeetshah.substack.com/p/the-voice-that-shows-up-before-everything",
+        pdf: "articles/the-voice-that-shows-up-before-everything-that-matters.pdf",
       },
       {
-        category: "Neuroscience", date: "May 4, 2025",
-        title: "Why Your Brain Works Differently After 10 PM",
-        excerpt: "There's a real biological reason late nights feel different — and it isn't a lack of willpower.",
-        url: "https://arpeetshah.github.io/the-pulse/articles/brain-at-night.html",
+        date: "Aug 16, 2026",
+        title: "I Taught a Computer to Read Brain Waves for Seizures.",
+        excerpt: "One patient broke the pattern — what building a seizure classifier actually taught me.",
+        substack: "https://arpeetshah.substack.com/p/i-taught-a-computer-to-read-brain",
+        pdf: "articles/i-taught-a-computer-to-read-brain-waves-for-seizures.pdf",
       },
       {
-        category: "Cognitive Science", date: "May 25, 2025",
-        title: "How to Actually Study — Not Just Reread Your Notes",
-        excerpt: "The science of what makes information stick, and why rereading barely works.",
-        url: "https://arpeetshah.github.io/the-pulse/articles/how-to-actually-study.html",
-      },
-      {
-        category: "Mental Health", date: "May 18, 2025",
-        title: "You Don't Have to Choose Between Grades and Having Fun",
-        excerpt: "The research on stress and balance — and why the tension you feel is real, but manageable.",
-        url: "https://arpeetshah.github.io/the-pulse/articles/grades-and-fun.html",
+        date: "Aug 9, 2026",
+        title: "The Science Behind Every Decision You've Ever Regretted",
+        excerpt: "A near-fall on a 14,000-foot cliff led me to real research on why teen brains are wired for risk.",
+        substack: "https://arpeetshah.substack.com/p/i-was-two-feet-from-a-14000-foot",
+        pdf: "articles/the-science-behind-every-decision-youve-ever-regretted.pdf",
       },
     ],
   },
 
-  // ORVEXA — "In the Making" (subtle section)
+  // RESEARCH — standalone clinical/academic section
+  research: {
+    eyebrow: "Clinical & Neuroscience Research",
+    title: "Research",
+    question:
+      "Can a computer automatically learn to recognize, and eventually anticipate, seizures directly from brain-signal data, without a human having to manually read every EEG?",
+    body: [
+      "My primary research investigates automated seizure detection from scalp electroencephalography. Working with the CHB-MIT Scalp EEG Database, a clinically-collected corpus of pediatric epilepsy recordings from Boston Children's Hospital distributed through PhysioNet, I quantify ictal versus interictal brain activity using variance-based signal features across 23 electrode channels sampled at 256 Hz. Seizure-state windows exhibit approximately 9× the variance of baseline activity, replicated across independent seizure events. The trajectory of this work is toward a validated, cross-patient classifier and submission for the AAN Neuroscience Research Prize.",
+      "In parallel, I'm an active research collaborator with a professor at <strong>UT Southwestern Medical Center</strong>, working on quantitative analysis of vocal biomarkers in <strong>Parkinson's disease</strong>. The project is on a trajectory toward peer-reviewed publication, and represents my first sustained work inside a clinical research lab environment under faculty mentorship.",
+    ],
+    stats: [
+      { k: "Focus", v: "EEG seizure detection · epilepsy" },
+      { k: "Dataset", v: "CHB-MIT Scalp EEG · PhysioNet" },
+      { k: "Collaboration", v: "UT Southwestern Medical Center" },
+      { k: "Second study", v: "Vocal biomarkers · Parkinson's disease" },
+      { k: "Status", v: "Manuscript in preparation" },
+      { k: "Submission", v: "AAN Neuroscience Research Prize" },
+    ],
+  },
+
+  // ORVEXA — website design & development, the way it actually makes money
   making: {
     title: "Orvexa Media Strategies",
     blurb:
-      "A social-media marketing agency I co-founded to get small local businesses the presence their work deserves. I'm co-founder and lead of content creation — planning what goes out, making it, and shaping the voice behind each account. We've built the model and are bringing on our first clients now.",
+      "I co-founded Orvexa to design and build websites for small local businesses that don't have the time, budget, or in-house talent to get one built right. I lead everything on the build side — design, front-end development, and deployment — from first draft to a site that's actually live.",
     stats: [
-      { k: "Role", v: "Co-founder · Content Lead" },
+      { k: "What I do", v: "Design & build websites for clients" },
+      { k: "Earned so far", v: "$1,500+ building sites for others" },
+      { k: "Role", v: "Co-founder · Lead Developer" },
       { k: "For", v: "Small local businesses" },
-      { k: "Stage", v: "Building the client base" },
     ],
     cta: { label: "Visit Orvexa", url: "https://arpeetshah.github.io/orvexa/" },
     image: "images/orvexa-2.png",
@@ -235,16 +256,16 @@ const CONTENT = {
 
   // TUTORING — its own section
   tutor: {
-    title: "Every lesson funds a cause.",
+    title: "Teaching that pays — and teaching that matters more.",
     body: [
-      "I tutor younger kids across <strong>every level of math up through pre-calculus</strong>, plus <strong>biology</strong> and <strong>Spanish</strong> — meeting them wherever they are and making the parts that feel impossible feel doable.",
-      "But here's what matters most: <strong>I don't keep the money.</strong> Every dollar I earn tutoring goes straight to a cause that helps the community. The teaching is something I genuinely love — the point of it is something bigger than me.",
-      "It's the same thread that runs through everything I do: take a skill I have, and turn it into something genuinely useful for someone else.",
+      "I tutor younger kids across <strong>every level of math up through pre-calculus</strong>, plus <strong>biology</strong> and <strong>Spanish</strong> — meeting them wherever they are and making the parts that feel impossible feel doable. On average it brings in around <strong>$500 a month</strong>.",
+      "But when I work with <strong>kids on the autism spectrum</strong>, I teach at a reduced rate. That part isn't about the income at all — it's about making sure a kid who needs to be taught differently still gets to be taught well. That's the trade I'd make every time.",
+      "It's the same thread that runs through everything I do: take a skill I have, and turn it into something genuinely useful for someone else — whether that pays or not.",
     ],
     stats: [
       { k: "Subjects", v: "Math (→ pre-calc) · Biology · Spanish" },
-      { k: "Who", v: "Younger students" },
-      { k: "Proceeds", v: "100% to a community cause" },
+      { k: "Earning", v: "~$500 / month" },
+      { k: "Spectrum students", v: "Reduced rate — cause over income" },
     ],
   },
 
@@ -289,8 +310,17 @@ const CONTENT = {
 
 const $ = (id) => document.getElementById(id);
 let lenisRef = null;
-let modelViewer = null;
 let ambience = null;
+
+// Hand-drawn symbols for chapters with no single representative photo.
+const SYMBOL_ICONS = {
+  toolkit: `<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="24" width="48" height="30" rx="4" stroke="var(--symbol-color)" stroke-width="2.5"/>
+    <path d="M22 24v-6a10 10 0 0 1 20 0v6" stroke="var(--symbol-color)" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M8 36h48" stroke="var(--symbol-color)" stroke-width="2.5"/>
+    <rect x="27" y="32" width="10" height="8" rx="2" fill="var(--symbol-color)"/>
+  </svg>`,
+};
 
 /* ---------------- Populate DOM ---------------- */
 function hydrate() {
@@ -352,19 +382,32 @@ function hydrate() {
     $("pulseArticles").innerHTML = p.articles
       .map(
         (a) => `
-        <a class="pulse__article reveal-up" href="${a.url}" target="_blank" rel="noopener" data-cursor>
-          <span class="pulse__article__cat">${a.category}<em>${a.date}</em></span>
+        <div class="pulse__article reveal-up${a.featured ? " pulse__article--pinned" : ""}">
+          <span class="pulse__article__cat">${a.featured ? "📌 Pinned" : "The Pulse"}<em>${a.date}</em></span>
           <div>
             <h3 class="pulse__article__title">${a.title}</h3>
             <p class="pulse__article__excerpt">${a.excerpt}</p>
           </div>
-          <span class="pulse__article__arrow">↗</span>
-        </a>`
+          <div class="pulse__article__links">
+            <a href="${a.substack}" target="_blank" rel="noopener" data-cursor>Substack ↗</a>
+            <a href="${a.pdf}" target="_blank" rel="noopener" data-cursor>PDF ↓</a>
+          </div>
+        </div>`
       )
       .join("");
     const cta = $("pulseCta");
     cta.href = p.cta.url;
     cta.innerHTML = `${p.cta.label} <i>↗</i>`;
+  }
+
+  // Research — clinical/academic section
+  if (CONTENT.research) {
+    const r = CONTENT.research;
+    $("researchEyebrow").textContent = r.eyebrow;
+    $("researchTitle").textContent = r.title;
+    $("researchQuestion").textContent = r.question;
+    $("researchBody").innerHTML = r.body.map((x) => `<p class="reveal-up">${x}</p>`).join("");
+    $("researchStats").innerHTML = r.stats.map((s) => `<div><dt>${s.k}</dt><dd>${s.v}</dd></div>`).join("");
   }
 
   // Orvexa — "In the Making"
@@ -524,10 +567,16 @@ function openDetail(i) {
   lenisRef && lenisRef.stop();
   ambience && ambience.muffle(true); // sound sinks underwater
 
-  if (!modelViewer) modelViewer = new ModelViewer($("dModel"));
-  window.__model = modelViewer; // exposed for debugging
-  modelViewer.show(c.model, c.color);
-  requestAnimationFrame(() => modelViewer.resize());
+  const symbolEl = $("dSymbol");
+  if (c.symbolIcon && SYMBOL_ICONS[c.symbolIcon]) {
+    symbolEl.classList.add("detail__symbol--icon");
+    symbolEl.style.setProperty("--symbol-color", c.color || "var(--accent)");
+    symbolEl.innerHTML = SYMBOL_ICONS[c.symbolIcon];
+  } else {
+    symbolEl.classList.remove("detail__symbol--icon");
+    const src = c.symbolImage || c.image;
+    symbolEl.innerHTML = src ? `<img src="${src}" alt="${c.title}" />` : "";
+  }
 
   gsap.fromTo(".detail__inner", { y: 46, opacity: 0 }, { y: 0, opacity: 1, duration: 0.85, ease: "expo.out" });
 }
@@ -736,13 +785,14 @@ function initScroll(scene, chapters) {
   // per-section label that fades in as each section crosses the middle
   const sectionLabel = $("sectionLabel"), sectionNum = $("sectionNum"), sectionName = $("sectionName");
   const SECTIONS = [
-    { id: "work", num: "01", name: "Work" },
-    { id: "pulse", num: "02", name: "The Pulse" },
-    { id: "orvexa", num: "03", name: "Orvexa" },
-    { id: "about", num: "04", name: "About" },
-    { id: "tutor", num: "05", name: "Tutoring" },
-    { id: "now", num: "06", name: "Now & Next" },
-    { id: "contact", num: "07", name: "Contact" },
+    { id: "about", num: "01", name: "About" },
+    { id: "work", num: "02", name: "Work" },
+    { id: "research", num: "03", name: "Research" },
+    { id: "pulse", num: "04", name: "The Pulse" },
+    { id: "orvexa", num: "05", name: "Orvexa" },
+    { id: "tutor", num: "06", name: "Tutoring" },
+    { id: "now", num: "07", name: "Now & Next" },
+    { id: "contact", num: "08", name: "Contact" },
   ];
   const secObs = new IntersectionObserver(
     (entries) => {

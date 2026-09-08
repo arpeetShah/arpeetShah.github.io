@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arpeet Shah — v2</title>
+  <meta name="robots" content="noindex" />
+
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link
+    href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=general-sans@400,500,600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <script type="importmap">
+  {
+    "imports": {
+      "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+      "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- fixed full-bleed theme background — a continuously interpolated color, not a hard class swap -->
+  <div class="theme-bg" id="themeBg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- NAME GATE — first paint: black wordmark on white, then dissolves into the photo -->
+  <div class="gate" id="gate" aria-hidden="true">
+    <span class="gate__name">ARPEET SHAH</span>
+  </div>
+
+  <!-- top bar -->
+  <header class="topbar">
+    <a class="topbar__mark" href="#hero-photo">Arpeet Shah <span>· v2</span></a>
+    <a class="topbar__back" href="../index.html">Original site →</a>
+  </header>
+
+  <!-- horizontal pulse tracker: heart moves left -> right, a line trails behind it -->
+  <div class="tracker" id="tracker" aria-hidden="true">
+    <div class="tracker__track"></div>
+    <div class="tracker__fill" id="trackerFill"></div>
+    <div class="tracker__checkpoints" id="trackerCheckpoints"></div>
+    <div class="tracker__heart" id="trackerHeart">
+      <svg viewBox="0 0 32 29" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="trackerHeartGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ff9dbb"/>
+            <stop offset="1" stop-color="#ff5c72"/>
+          </linearGradient>
+        </defs>
+        <path d="M16 27.8 C16 27.8 2.2 19.6 2.2 9.6 C2.2 5.1 5.8 1.9 9.4 1.9 C12.3 1.9 14.9 3.9 16 6.4 C17.1 3.9 19.7 1.9 22.6 1.9 C26.2 1.9 29.8 5.1 29.8 9.6 C29.8 19.6 16 27.8 16 27.8 Z" fill="url(#trackerHeartGrad)"/>
+      </svg>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============ HERO PHOTO — dissolves in from the name gate, slow reach-in zoom, flows into About's picture ============ -->
+    <section class="hero-photo" id="hero-photo" data-checkpoint="Arpeet">
+      <div class="hero-photo__zoomwrap" id="heroPhotoZoomWrap">
+        <div class="hero-photo__pin">
+          <div class="hero-photo__frame" id="heroPhotoFrame">
+            <img src="../images/me-about.jpg" alt="Arpeet Shah" id="heroPhotoImg" />
+            <div class="hero-photo__reach" id="heroPhotoReach" aria-hidden="true"></div>
+          </div>
+          <div class="hero-photo__caption reveal" id="heroPhotoCaption">Scroll</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ME ============ -->
+    <section class="about" id="about" data-checkpoint="About">
+      <div class="about__grid">
+        <div class="about__text">
+          <span class="about__eyebrow reveal">01 — About</span>
+          <h2 class="about__title reveal">Researcher. Writer. Builder.</h2>
+          <p class="about__p reveal">I'm Arpeet — a high school senior in McKinney, Texas, building toward a career in medicine. Right now that means independent research testing whether a computer can detect and eventually predict epileptic seizures from raw EEG data for the <strong>AAN Neuroscience Research Prize</strong>, and writing <strong>The Pulse</strong>, a weekly publication that turns real health research into something a teenager will actually read.</p>
+          <p class="about__p reveal">Outside of that, I tutor, build websites, compete in cricket and tennis, and every Saturday I teach, serve, and lead programming at my mandir. Different rooms, same instinct: take something complicated, and make it genuinely useful to someone else.</p>
+        </div>
+        <div class="about__media reveal">
+          <img src="../images/me-about.jpg" alt="Arpeet Shah" loading="lazy" id="aboutImg" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ THE PULSE ============ -->
+    <section class="pulse-hero" id="pulse" data-checkpoint="The Pulse">
+      <div class="pulse-hero__zoomwrap" id="pulseZoomWrap">
+        <div class="pulse-hero__pin">
+          <div class="monitor" id="monitor">
+            <svg viewBox="0 0 420 300" class="monitor__svg">
+              <rect x="6" y="6" width="408" height="288" rx="22" class="monitor__bezel" />
+              <rect x="26" y="28" width="368" height="200" rx="8" class="monitor__screen" />
+              <path class="monitor__ekg-track" d="M26 128 H130 l8 -46 l14 90 l12 -70 l9 26 H394" />
+              <path class="monitor__ekg-line" id="monitorEkg" d="M26 128 H130 l8 -46 l14 90 l12 -70 l9 26 H394" />
+              <text x="46" y="205" class="monitor__readout">72</text>
+              <text x="46" y="222" class="monitor__readout-label">BPM</text>
+              <text x="200" y="205" class="monitor__readout-label">THE PULSE — LIVE</text>
+              <circle cx="374" cy="52" r="5" class="monitor__led" />
+            </svg>
+          </div>
+
+          <div class="pulse-hero__reveal" id="pulseReveal">
+            <span class="pulse-hero__eyebrow" id="pulseEyebrow">02 — The Publication</span>
+            <h1 class="pulse-hero__masthead">THE PULSE</h1>
+            <p class="pulse-hero__lede" id="pulseLede"></p>
+            <div class="pulse-hero__ctas">
+              <a class="pulse-hero__cta pulse-hero__cta--fill" id="pulseSubstack" href="https://arpeetshah.substack.com" target="_blank" rel="noopener">Subscribe on Substack ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pulse-hero__body">
+        <div class="pulse-hero__purpose" id="pulsePurpose"></div>
+
+        <div class="pulse-hero__head reveal"><span>Recent — real research, honestly explained</span></div>
+        <div class="pulse-hero__articles" id="pulseArticles"><!-- injected --></div>
+      </div>
+    </section>
+
+    <!-- ============ RESEARCH ============ -->
+    <section class="panel panel--research" id="research" data-checkpoint="Research">
+      <div class="panel__inner">
+        <span class="panel__eyebrow reveal">03 — Neuroscience Research</span>
+        <h2 class="panel__title reveal">Seizure Detection</h2>
+
+        <blockquote class="panel__question reveal">
+          Can a computer detect, and eventually anticipate, an epileptic seizure from raw electroencephalographic activity alone?
+        </blockquote>
+
+        <div class="panel__cols">
+          <div class="panel__col reveal">
+            <p>Epilepsy affects approximately 50 million people worldwide, and diagnosis still depends on trained specialists manually reviewing EEG recordings, a process that is slow, expensive, and not universally accessible. This research investigates whether quantitative signal features can approximate that manual review.</p>
+            <p>The dataset is the <strong>CHB-MIT Scalp EEG Database</strong>, clinically collected pediatric epilepsy recordings from Boston Children's Hospital, distributed through PhysioNet. Each hour-long recording spans 23 electrode channels sampled at 256 Hz and is labeled by clinicians with exact seizure onset and offset times.</p>
+            <p>The primary metric is <strong>variance</strong>, a measure of how sharply a signal fluctuates within a fixed time window. Across 1,799 two-second windows, seizure activity averaged approximately nine times the variance of baseline activity. A second, independent seizure from the same patient replicated the finding at 8.3 times baseline.</p>
+          </div>
+          <dl class="panel__stats reveal">
+            <div><dt>For</dt><dd>AAN Neuroscience Research Prize</dd></div>
+            <div><dt>Data</dt><dd>CHB-MIT Scalp EEG · PhysioNet</dd></div>
+            <div><dt>Method</dt><dd>Python · MNE · variance → ML</dd></div>
+            <div><dt>Finding</dt><dd>Seizure variance ~9× baseline</dd></div>
+            <div><dt>Validated</dt><dd>2 independent seizures</dd></div>
+            <div><dt>Status</dt><dd>Phase 1 — in progress</dd></div>
+          </dl>
+        </div>
+        <img class="panel__img reveal" src="../images/neuro-eeg.png" alt="Baseline vs. seizure EEG activity" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- ============ TUTORING ============ -->
+    <section class="panel panel--tutor" id="tutoring" data-checkpoint="Tutoring">
+      <div class="panel__inner">
+        <span class="panel__eyebrow reveal">04 — Teaching, For a Cause</span>
+        <h2 class="panel__title reveal">Every lesson funds a cause.</h2>
+        <div class="panel__cols">
+          <div class="panel__col reveal">
+            <p>I mainly tutor <strong>math</strong>, from students learning it the standard way to students on the <strong>autism spectrum</strong> who need it taught differently. My range spans from <strong>6th grade math all the way through AP Precalculus</strong>, and I also teach biology and Spanish.</p>
+            <p>But here's what matters most: <strong>I don't keep the money.</strong> Every dollar I earn goes straight to a cause that helps the community.</p>
+          </div>
+          <dl class="panel__stats reveal">
+            <div><dt>Subjects</dt><dd>Math (6th grade → AP Precalc) · Biology · Spanish</dd></div>
+            <div><dt>Who</dt><dd>All learners, including students on the spectrum</dd></div>
+            <div><dt>Proceeds</dt><dd>100% to a community cause</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CODE & CRAFT ============ -->
+    <section class="panel panel--build" id="build" data-checkpoint="Build">
+      <div class="panel__inner">
+        <span class="panel__eyebrow reveal">05 — What I'm Building</span>
+        <h2 class="panel__title reveal">Code &amp; Craft</h2>
+        <p class="panel__lede reveal">When the tool I need doesn't exist, I build it — sites, shaders, experiments.</p>
+        <div class="panel__cols">
+          <div class="panel__col reveal">
+            <p>I built The Pulse's site from scratch, and this portfolio too — WebGL, custom GLSL shaders, and scroll-driven motion. Beyond my own projects, I've built and sold websites for other people, earning <strong>over $1,000</strong> doing it.</p>
+            <p>Code is the through-line for everything else here. I'm mostly self-taught, which means I learn by shipping something slightly harder than the last thing.</p>
+            <a class="panel__link" href="https://github.com/arpeetShah" target="_blank" rel="noopener">See the code on GitHub →</a>
+          </div>
+          <dl class="panel__stats reveal">
+            <div><dt>Stack</dt><dd>JS · Three.js · Python</dd></div>
+            <div><dt>Focus</dt><dd>Creative dev</dd></div>
+            <div><dt>Earned</dt><dd>$1,000+ building sites for others</dd></div>
+          </dl>
+        </div>
+        <img class="panel__img reveal" src="../images/portfolio-hero.png" alt="Portfolio site" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- ============ CAPABILITIES ============ -->
+    <section class="panel panel--skills" id="skills" data-checkpoint="Skills">
+      <div class="panel__inner">
+        <span class="panel__eyebrow reveal">06 — Skills &amp; Tools</span>
+        <h2 class="panel__title reveal">Capabilities</h2>
+        <p class="panel__lede reveal">A researcher's toolkit, a writer's instinct, and a builder's hands.</p>
+        <div class="panel__cols">
+          <div class="panel__col reveal">
+            <p>On the research side I work in <strong>Python</strong> with MNE for EEG signal processing, plus NumPy and scikit-learn. On the build side: <strong>JavaScript, Three.js, GLSL</strong>. I design in Figma and keep everything organized in Notion.</p>
+            <p>The real skill under all of them is the same: <strong>taking something genuinely complex and making it clear.</strong></p>
+          </div>
+          <dl class="panel__stats reveal">
+            <div><dt>Research</dt><dd>Python · MNE · scikit-learn</dd></div>
+            <div><dt>Build</dt><dd>JavaScript · Three.js · GLSL</dd></div>
+            <div><dt>Design</dt><dd>Figma · Notion</dd></div>
+            <div><dt>Core</dt><dd>Writing · research · explaining</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="contact" id="contact" data-checkpoint="Contact">
+      <div class="contact__inner">
+        <span class="contact__eyebrow reveal">07 — Let's build something</span>
+        <a class="contact__email reveal" href="mailto:arpeet.s.shah@gmail.com">arpeet.s.shah@gmail.com</a>
+        <div class="contact__socials reveal">
+          <a href="https://arpeetshah.substack.com" target="_blank" rel="noopener">Substack</a>
+          <a href="https://github.com/arpeetShah" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Arpeet Shah</span>
+        <span>© <span id="year"></span> — McKinney, Texas</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
